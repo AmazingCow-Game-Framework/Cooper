@@ -108,8 +108,8 @@ void Game::InnerRun()
     //--------------------------------------------------------------------------
     // Show the FPS info.
     if(Game::Instance()->m_fpsTime >= 1.0f)
-
-        Cooper::Log::I("FPS:: %s", Game::Instance()->m_fpsFrames);
+    {
+        Cooper::Log::I("FPS: %d", Game::Instance()->m_fpsFrames);
         Game::Instance()->m_fpsTime   = 0;
         Game::Instance()->m_fpsFrames = 0;
     }
