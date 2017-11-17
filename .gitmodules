@@ -1,0 +1,3 @@
+[submodule "lib/CoreRandom"]
+	path = lib/CoreRandom
+	url = https://github.com/AmazingCow-Libs/CoreRandom
