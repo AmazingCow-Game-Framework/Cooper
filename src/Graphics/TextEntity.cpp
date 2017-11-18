@@ -71,7 +71,7 @@ void TextEntity::UpdateTexture()
 {
     //--------------------------------------------------------------------------
     //We're fully transparent - So don't need spend cycles drawing it.
-    if(m_opacity <= 0.0f || m_contents.empty() || !m_pFont || !Visible())
+    if(m_contents.empty() || !m_pFont)
         return;
 
     m_pManagedTexture = m_pGraphicsRef->CreateFontTextureManaged(
