@@ -84,12 +84,17 @@ void TextureAtlas::LoadFromFile()
 
     //COWTODO(n2omatt): This is exactly like the CoreFile...
     //  Should we use it instead to get first class file handling?
-
-    //COWTODO(n2omatt): Write error checking code...
     std::vector<std::string> lines;
 
     std::fstream file_stream;
     file_stream.open(m_atlasPath.c_str(), std::ios::in);
+
+    COOPER_VERIFY(
+        file_stream.is_open(),
+        "Can't open TextureAtlas: %s",
+        m_atlasPath.c_str()
+    );
+
     while(!file_stream.eof())
     {
         std::string line;
@@ -100,6 +105,12 @@ void TextureAtlas::LoadFromFile()
 
         lines.push_back(line);
     }
+
+    COOPER_ASSERT(
+        !lines.empty(),
+        "Empty TextureAtlas: %s",
+        m_atlasPath.c_str()
+    );
 
     m_texturesPath = RES::Fullpath(lines[0]);
     for(auto it = ++std::begin(lines); it != std::end(lines); ++it)
