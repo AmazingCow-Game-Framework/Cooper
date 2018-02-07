@@ -19,10 +19,10 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Game/Entity.h"
+#include "include/Game/Entity.h"
 // Cooper
-#include "Cooper/include/Game/Game.h"
-#include "Cooper/include/Graphics/Graphics.h"
+#include "include/Game/Game.h"
+#include "include/Graphics/Graphics.h"
 
 //Usings
 using namespace Cooper;

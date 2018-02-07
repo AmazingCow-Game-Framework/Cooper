@@ -21,7 +21,7 @@
 #pragma once
 
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 
 namespace Cooper {
 

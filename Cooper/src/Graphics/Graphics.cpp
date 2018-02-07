@@ -19,9 +19,9 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Graphics/Graphics.h"
+#include "include/Graphics/Graphics.h"
 // Cooper
-#include "Cooper/include/Log/Log.h"
+#include "include/Log/Log.h"
 
 // Usings
 using namespace Cooper;

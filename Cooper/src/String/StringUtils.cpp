@@ -19,9 +19,9 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/String/StringUtils.h"
+#include "include/String/StringUtils.h"
 // Cooper
-#include "Cooper/include/Macros/private/MacrosHelpers.h"
+#include "include/Macros/private/MacrosHelpers.h"
 
 // Usings
 using namespace Cooper;

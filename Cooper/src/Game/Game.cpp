@@ -19,11 +19,11 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Game/Game.h"
+#include "include/Game/Game.h"
 // Cooper
-#include "Cooper/include/Graphics/Graphics.h"
-#include "Cooper/include/Input/Input.h"
-#include "Cooper/include/Log/Log.h"
+#include "include/Graphics/Graphics.h"
+#include "include/Input/Input.h"
+#include "include/Log/Log.h"
 //----------------------------------------------------------------------------//
 // Conditional Headers
 #ifdef EMSCRIPTEN

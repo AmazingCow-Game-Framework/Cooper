@@ -20,11 +20,11 @@
 
 #pragma once
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 // Cooper
-#include "Cooper/include/Game/Entity.h"
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Timer/Timer.h"
+#include "include/Game/Entity.h"
+#include "include/Macros/Macros.h"
+#include "include/Timer/Timer.h"
 
 //COWTODO(n2omatt): We're not using the targetFPS hint today.
 

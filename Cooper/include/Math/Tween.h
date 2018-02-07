@@ -21,7 +21,7 @@
 // std
 #include <functional> //std::function
 // Cooper
-#include "Cooper/include/Math/Operations.h"
+#include "include/Math/Operations.h"
 
 namespace Cooper {
 

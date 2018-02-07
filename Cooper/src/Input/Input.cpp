@@ -19,7 +19,7 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Input/Input.h"
+#include "include/Input/Input.h"
 // std
 #include <cstring> // memset(3), memcpy(3), memcmp(3)
 

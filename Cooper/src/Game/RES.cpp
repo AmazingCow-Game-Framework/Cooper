@@ -19,17 +19,17 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Game/RES.h"
+#include "include/Game/RES.h"
 // std
 #include <map>
 // SDL
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 // Cooper
-#include "Cooper/include/Graphics/Graphics.h"
-#include "Cooper/include/Graphics/TextureAtlas.h"
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Memory/Memory.h"
+#include "include/Graphics/Graphics.h"
+#include "include/Graphics/TextureAtlas.h"
+#include "include/Macros/Macros.h"
+#include "include/Memory/Memory.h"
 
 // Usings
 using namespace Cooper;
@@ -306,4 +306,3 @@ void free_font(const std::string &key)
 
     m_fontMap.erase(key);
 }
-

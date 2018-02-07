@@ -24,8 +24,8 @@
 #include <map>
 #include <string>
 // Cooper
-#include "Cooper/include/Graphics/TextureEntity.h"
-#include "Cooper/include/Macros/Macros.h"
+#include "include/Graphics/TextureEntity.h"
+#include "include/Macros/Macros.h"
 
 
 namespace Cooper {

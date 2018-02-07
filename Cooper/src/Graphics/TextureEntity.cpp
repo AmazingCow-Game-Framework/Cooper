@@ -18,10 +18,10 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-#include "Cooper/include/Graphics/TextureEntity.h"
+#include "include/Graphics/TextureEntity.h"
 // Cooper
-#include "Cooper/include/Game/RES.h"
-#include "Cooper/include/Graphics/Graphics.h"
+#include "include/Game/RES.h"
+#include "include/Graphics/Graphics.h"
 
 // Usings
 using namespace Cooper;
@@ -78,4 +78,3 @@ void TextureEntity::Render()
 
     );
 }
-

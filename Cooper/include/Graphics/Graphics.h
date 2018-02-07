@@ -24,12 +24,12 @@
 #include <memory> //shared_ptr
 #include <string>
 // SDL
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 // Cooper
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Math/Math.h"
+#include "include/Macros/Macros.h"
+#include "include/Math/Math.h"
 
 namespace Cooper {
 

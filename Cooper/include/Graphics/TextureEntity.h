@@ -23,11 +23,11 @@
 // std
 #include <string>
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 // Cooper
-#include "Cooper/include/Game/Entity.h"
-#include "Cooper/include/Math/Math.h"
-#include "Cooper/include/Macros/Macros.h"
+#include "include/Game/Entity.h"
+#include "include/Math/Math.h"
+#include "include/Macros/Macros.h"
 
 
 namespace Cooper {

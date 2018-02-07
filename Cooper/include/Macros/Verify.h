@@ -21,7 +21,7 @@
 #pragma once
 
 // Headers
-#include "Cooper/include/Macros/private/MacrosHelpers.h"
+#include "include/Macros/private/MacrosHelpers.h"
 
 //----------------------------------------------------------------------------//
 // Macros                                                                     //

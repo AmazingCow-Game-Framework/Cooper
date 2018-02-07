@@ -23,9 +23,9 @@
 // std
 #include <cmath>
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 // Cooper
-#include "Cooper/include/Math/Vec2.h"
+#include "include/Math/Vec2.h"
 
 
 namespace Cooper { namespace Math {

@@ -21,11 +21,11 @@
 #pragma once
 
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 // std
 #include <cmath>
 // Cooper
-#include "Cooper/include/Math/Constants.h"
+#include "include/Math/Constants.h"
 
 namespace Cooper {
 

@@ -19,15 +19,15 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Graphics/TextureAtlas.h"
+#include "include/Graphics/TextureAtlas.h"
 // std
 #include <fstream>
 #include <sstream>
 #include <vector>
 // Cooper
-#include "Cooper/include/Game/RES.h"
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Memory/Memory.h"
+#include "include/Game/RES.h"
+#include "include/Macros/Macros.h"
+#include "include/Memory/Memory.h"
 
 //Usings
 using namespace Cooper;

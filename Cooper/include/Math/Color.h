@@ -23,7 +23,7 @@
 // std
 #include <cmath>
 // SDL
-#include "SDL.h"
+#include <SDL.h>
 
 namespace Cooper { namespace Math {
 

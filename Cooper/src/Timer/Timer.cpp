@@ -19,9 +19,9 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Timer/Timer.h"
+#include "include/Timer/Timer.h"
 // Cooper
-#include "Cooper/include/Macros/Macros.h"
+#include "include/Macros/Macros.h"
 
 // Usings
 using namespace Cooper;
@@ -71,4 +71,3 @@ float Timer::Restart()
 
     return m_deltaTime;
 }
-

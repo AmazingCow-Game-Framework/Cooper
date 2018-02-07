@@ -19,13 +19,13 @@
 //---------------------------------------------------------------------------~//
 
 // Header
-#include "Cooper/include/Sound/Sound.h"
+#include "include/Sound/Sound.h"
 // std
 #include <map>
 // Cooper
-#include "Cooper/include/Log/Log.h"
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Memory/Memory.h"
+#include "include/Log/Log.h"
+#include "include/Macros/Macros.h"
+#include "include/Memory/Memory.h"
 // Cooper Sound - Private.
 #include "Cooper/src/Sound/private/AudioLib.h"
 #include "Cooper/src/Sound/private/AudioValues.h"

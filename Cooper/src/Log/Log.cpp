@@ -19,11 +19,11 @@
 //---------------------------------------------------------------------------~//
 
 //Header
-#include "Cooper/include/Log/Log.h"
+#include "include/Log/Log.h"
 //Cooper
-#include "Cooper/include/Macros/Macros.h"
+#include "include/Macros/Macros.h"
 //Cooper - Private
-#include "Cooper/include/Macros/private/MacrosHelpers.h"
+#include "include/Macros/private/MacrosHelpers.h"
 
 //Usings
 using namespace Cooper;

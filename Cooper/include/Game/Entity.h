@@ -21,8 +21,8 @@
 #pragma once
 
 // Cooper
-#include "Cooper/include/Macros/Macros.h"
-#include "Cooper/include/Math/Math.h"
+#include "include/Macros/Macros.h"
+#include "include/Math/Math.h"
 
 namespace Cooper {
 // Forward declarations.
