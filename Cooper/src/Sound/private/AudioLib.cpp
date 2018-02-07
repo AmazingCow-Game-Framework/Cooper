@@ -322,7 +322,7 @@ static inline void playAudio(const char * filename, Audio * audio, uint8_t loop,
             return;
         }
 
-        memcpy(_new, audio, sizeof(Audio));
+        SDL_memcpy(_new, audio, sizeof(Audio));
 
         _new->volume = volume;
         _new->loop = loop;
