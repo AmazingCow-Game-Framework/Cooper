@@ -32,10 +32,10 @@ using namespace Cooper;
 Private::AudioValues Private::GetPlatformAudioValues()
 {
     return AudioValues {
-        .format    = AUDIO_F32,
-        .frequency = 44100,
-        .channels  = 2,
-        .samples   = 512,
+        /* .format    = */ AUDIO_F32,
+        /* .frequency = */ 44100,
+        /* .channels  = */ 2,
+        /* .samples   = */ 512,
     };
 }
 
