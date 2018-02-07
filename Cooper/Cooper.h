@@ -20,6 +20,9 @@
 #pragma once
 
 //------------------------------------------------------------------------------
+// Backports
+#include "include/Backports/SDL.h"
+//------------------------------------------------------------------------------
 // Game
 #include "include/Game/Game.h"
 #include "include/Game/Entity.h"
@@ -53,4 +56,4 @@
 #include "include/Timer/Timer.h"
 //------------------------------------------------------------------------------
 // 3rd part Headers.
-#include "lib/CoreRandom/include/CoreRandom.h"
+#include "lib/CoreRandom/CoreRandom/CoreRandom.h"
