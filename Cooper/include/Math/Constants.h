@@ -28,8 +28,8 @@ namespace Cooper { namespace Math {
 //----------------------------------------------------------------------------//
 // Constants                                                                  //
 //----------------------------------------------------------------------------//
-constexpr static float kPI              = float(M_PI);
-constexpr static float k2PI             = float(M_PI * 2.0f);
+constexpr static float kPI              = float(3.14159265358979323846264338327950288);
+constexpr static float k2PI             = float(kPI * 2.0f);
 constexpr static float kDegrees2Radians = (kPI / 180.0f);
 constexpr static float kRadians2Degrees = (180.0f / kPI);
 
