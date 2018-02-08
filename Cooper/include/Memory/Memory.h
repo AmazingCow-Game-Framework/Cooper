@@ -40,7 +40,7 @@ namespace Cooper {
 // the end of the anonymous inner namespace), next we make a define with
 // the same name of make_unique.
 //
-#if (__cplusplus==201402L) // C++14
+#if (defined(_WIN32) && (_MSVC_LANG >= 201402)) || (__cplusplus==201402L)
     namespace {
         using namespace std;
         #define make_unique make_unique
