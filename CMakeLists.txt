@@ -24,9 +24,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_fi
 ##----------------------------------------------------------------------------##
 
 if(WIN32)
-    set(SDL2_PATH       "C:/libs/VS/SDL2-2.0.7"      )
-    set(SDL2_IMAGE_PATH "C:/libs/VS/SDL2_image-2.0.2")
-    set(SDL2_TTF_PATH   "C:/libs/VS/SDL2_ttf-2.0.14" )
+    set(SDL2_PATH       "${CMAKE_CURRENT_SOURCE_DIR}/windows/VS/SDL2-2.0.7"      )
+    set(SDL2_IMAGE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/windows/VS/SDL2_image-2.0.2")
+    set(SDL2_TTF_PATH   "${CMAKE_CURRENT_SOURCE_DIR}/windows/VS/SDL2_ttf-2.0.14" )
 endif()
 
 find_package(SDL2       REQUIRED)
