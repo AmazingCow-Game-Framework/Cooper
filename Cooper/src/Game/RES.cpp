@@ -107,18 +107,18 @@ void RES::Shutdown()
 
     //--------------------------------------------------------------------------
     // Release all Atlases.
-    for(const auto &item : m_atlasMap)
-        FreeAtlas(item.first);
+    while(!m_atlasMap.empty())
+        FreeAtlas(m_atlasMap.begin()->first);
 
     //--------------------------------------------------------------------------
     // Release all Textures.
-    for(const auto &item : m_texturesMap)
-        FreeTexture(item.first);
+    while(!m_texturesMap.empty())
+        FreeTexture(m_texturesMap.begin()->first);
 
     //--------------------------------------------------------------------------
     // Release all Fonts.
-    for(const auto &item : m_fontMap)
-        free_font(item.first);
+    while(!m_fontMap.empty())
+        free_font(m_fontMap.begin()->first);
 
     //COWTODO(n2omatt): Implement for audio.
 
