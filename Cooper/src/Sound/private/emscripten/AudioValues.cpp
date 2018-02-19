@@ -21,7 +21,7 @@
 #ifdef EMSCRIPTEN
 
 // Header
-#include "Cooper/src/Sound/private/AudioValues.h"
+#include "src/Sound/private/AudioValues.h"
 // Emscripten
 #include <emscripten/emscripten.h>
 

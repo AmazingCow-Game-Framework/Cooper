@@ -20,7 +20,7 @@
 
 #ifndef EMSCRIPTEN
 // Header
-#include "Cooper/src/Sound/private/AudioValues.h"
+#include "src/Sound/private/AudioValues.h"
 
 // Usings
 using namespace Cooper;

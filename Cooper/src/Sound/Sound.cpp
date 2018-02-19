@@ -27,8 +27,8 @@
 #include "include/Macros/Macros.h"
 #include "include/Memory/Memory.h"
 // Cooper Sound - Private.
-#include "Cooper/src/Sound/private/AudioLib.h"
-#include "Cooper/src/Sound/private/AudioValues.h"
+#include "src/Sound/private/AudioLib.h"
+#include "src/Sound/private/AudioValues.h"
 
 // Usings
 using namespace Cooper;
