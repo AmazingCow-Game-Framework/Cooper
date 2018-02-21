@@ -27,9 +27,13 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+// Amazing Cow Libs
+#include "acow/sdl_goodies.h"
 // Cooper
 #include "include/Macros/Macros.h"
 #include "include/Math/Math.h"
+
+#include <cstdint>
 
 namespace Cooper {
 
@@ -46,6 +50,33 @@ public:
     // Lifecycle Functions                                                    //
     //------------------------------------------------------------------------//
 public:
+    struct Options
+    {
+        //----------------------------------------------------------------------
+        //
+        uint16_t win_Width;
+        uint16_t win_Height;
+
+        //----------------------------------------------------------------------
+        //
+        uint16_t win_MaxWidth;
+        uint16_t win_MaxHeight;
+
+        //----------------------------------------------------------------------
+        //
+        uint16_t win_MinWidth;
+        uint16_t win_MinHeight;
+
+        //----------------------------------------------------------------------
+        //
+        bool     win_Resizable;
+        uint32_t win_SDLFlags;
+
+        std::string win_Caption;
+    };
+
+    static void Init(const Options &options) noexcept;
+
     static void Init(int width, int height, const std::string &caption);
     static void Shutdown();
 
@@ -79,7 +110,7 @@ public:
         COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
 
         auto p_texture = SDL_CreateTexture(
-            m_pRenderer,
+            m_pRenderer.get(),
             format,
             access,
             width,
@@ -124,19 +155,19 @@ public:
         COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
 
         m_clearColor = c;
-        SDL_SetRenderDrawColor(m_pRenderer, c.r, c.g, c.b, 0xFF);
+        SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
     }
 
     inline void Clear()
     {
         COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
-        SDL_RenderClear(m_pRenderer);
+        SDL_RenderClear(m_pRenderer.get());
     }
 
     inline void Present()
     {
         COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
-        SDL_RenderPresent(m_pRenderer);
+        SDL_RenderPresent(m_pRenderer.get());
     }
 
 
@@ -144,8 +175,8 @@ public:
     // Texture.
     void RenderTexture(
         SDL_Texture      *pTexture,
-        const SDL_Rect   &srcRrect,
-        const SDL_Rect   &dstRrect,
+        const SDL_Rect   &srcRect,
+        const SDL_Rect   &dstRect,
         float            angleDegrees,
         const SDL_Point  &origin,
         SDL_RendererFlip flip    = SDL_FLIP_NONE,
@@ -183,8 +214,8 @@ public:
     std::string m_caption;
 
     // SDL.
-    SDL_Window   *m_pWindow;
-    SDL_Renderer *m_pRenderer;
+    acow::sdl::Window::UPtr   m_pWindow;
+    acow::sdl::Renderer::UPtr m_pRenderer;
 
 }; //class Graphics
 } //namespace Cooper
