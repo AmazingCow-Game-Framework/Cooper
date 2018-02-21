@@ -37,23 +37,19 @@
 // Input
 #include "include/Input/Input.h"
 //------------------------------------------------------------------------------
-// Log
-#include "include/Log/Log.h"
-//------------------------------------------------------------------------------
-// Macros
-#include "include/Macros/Macros.h"
-//------------------------------------------------------------------------------
 // Memory
 #include "include/Memory/Memory.h"
 //------------------------------------------------------------------------------
 // Sound
 #include "include/Sound/Sound.h"
 //------------------------------------------------------------------------------
-// String
-#include "include/String/StringUtils.h"
-//------------------------------------------------------------------------------
 // Timer
 #include "include/Timer/Timer.h"
 //------------------------------------------------------------------------------
-// 3rd part Headers.
-#include "lib/CoreRandom/CoreRandom/CoreRandom.h"
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
+#include "acow/sdl_goodies.h"
+#include "CoreAssert/CoreAssert.h"
+#include "CoreLog/CoreLog.h"
+#include "CoreRandom/CoreRandom.h"
+#include "CoreString/CoreString.h"
