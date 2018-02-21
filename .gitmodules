@@ -13,3 +13,12 @@
 [submodule "lib/acow_sdl_goodies"]
 	path = lib/acow_sdl_goodies
 	url = https://github.com/AmazingCow-Libs/acow_sdl_goodies
+[submodule "lib/CoreLog"]
+	path = lib/CoreLog
+	url = https://github.com/AmazingCow-Libs/CoreLog
+[submodule "lib/libtermcolor"]
+	path = lib/libtermcolor
+	url = https://github.com/AmazingCow-Libs/libtermcolor
+[submodule "lib/acow_nt_posix"]
+	path = lib/acow_nt_posix
+	url = https://github.com/AmazingCow-Libs/acow_nt_posix
