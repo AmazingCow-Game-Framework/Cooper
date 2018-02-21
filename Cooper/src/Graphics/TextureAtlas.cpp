@@ -24,9 +24,10 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+// AmazingCow Libs
+#include "CoreAssert/CoreAssert.h"
 // Cooper
 #include "include/Game/RES.h"
-#include "include/Macros/Macros.h"
 #include "include/Memory/Memory.h"
 
 //Usings
@@ -58,7 +59,7 @@ const SDL_Rect& TextureAtlas::Rectangle(const std::string &key)
 {
     auto it = m_rectsMap.find(key);
 
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         it != std::end(m_rectsMap),
         "Rectangle isn't on atlas - Rectangle: %s - Atlas: %s",
         key.c_str(),
@@ -89,7 +90,7 @@ void TextureAtlas::LoadFromFile()
     std::fstream file_stream;
     file_stream.open(m_atlasPath.c_str(), std::ios::in);
 
-    COOPER_VERIFY(
+    COREASSERT_VERIFY(
         file_stream.is_open(),
         "Can't open TextureAtlas: %s",
         m_atlasPath.c_str()
@@ -106,7 +107,7 @@ void TextureAtlas::LoadFromFile()
         lines.push_back(line);
     }
 
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         !lines.empty(),
         "Empty TextureAtlas: %s",
         m_atlasPath.c_str()

@@ -22,12 +22,11 @@
 
 // std
 #include <string>
-// SDL
-#include <SDL.h>
-#include <SDL_ttf.h>
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
+#include "acow/sdl_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
-#include "include/Macros/Macros.h"
 #include "include/Math/Math.h"
 
 
@@ -40,7 +39,7 @@ class TextEntity
     // Enums / Constants / Typedefs                                           //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SMART_PTRS_OF(TextEntity);
+    ACOW_SMART_PTRS_OF(TextEntity);
 
 
     //------------------------------------------------------------------------//

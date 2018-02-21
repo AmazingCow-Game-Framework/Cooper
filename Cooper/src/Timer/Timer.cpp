@@ -20,8 +20,10 @@
 
 // Header
 #include "include/Timer/Timer.h"
-// Cooper
-#include "include/Macros/Macros.h"
+// AmazingCow Libs
+#include "acow/sdl_goodies.h"
+#include "CoreAssert/CoreAssert.h"
+
 
 // Usings
 using namespace Cooper;
@@ -56,7 +58,7 @@ void Timer::Reset()
 
 void Timer::Update()
 {
-    COOPER_ASSERT(m_initialized, "Timer isn't initialized - Call Reset().");
+    COREASSERT_ASSERT(m_initialized, "Timer isn't initialized - Call Reset().");
     Restart();
 }
 

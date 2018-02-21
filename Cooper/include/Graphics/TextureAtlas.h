@@ -23,9 +23,10 @@
 // std
 #include <map>
 #include <string>
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
 // Cooper
 #include "include/Graphics/TextureEntity.h"
-#include "include/Macros/Macros.h"
 
 
 namespace Cooper {
@@ -36,7 +37,7 @@ class TextureAtlas
     // Enums / Constants / Typedefs                                           //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SMART_PTRS_OF(TextureAtlas);
+    ACOW_SMART_PTRS_OF(TextureAtlas);
 
 
     //------------------------------------------------------------------------//

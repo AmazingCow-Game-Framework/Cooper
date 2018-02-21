@@ -20,10 +20,14 @@
 
 // Header
 #include "include/Game/Game.h"
+// AmazingCow Libs
+#include "CoreAssert/CoreAssert.h"
+#include "CoreLog/CoreLog.h"
 // Cooper
 #include "include/Graphics/Graphics.h"
 #include "include/Input/Input.h"
-#include "include/Log/Log.h"
+
+
 //----------------------------------------------------------------------------//
 // Conditional Headers
 #ifdef EMSCRIPTEN
@@ -53,7 +57,10 @@ Game::~Game()
 //----------------------------------------------------------------------------//
 void Game::Init(int /** targetFPS **/)
 {
-    COOPER_ASSERT(!Instance()->m_initialized, "Game is already initialized.");
+    COREASSERT_ASSERT(
+        !Instance()->m_initialized,
+        "Game is already initialized."
+    );
 
     //--------------------------------------------------------------------------
     // Cache stuff for performance.
@@ -66,7 +73,7 @@ void Game::Init(int /** targetFPS **/)
 
 void Game::Shutdown()
 {
-    COOPER_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
+    COREASSERT_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
 
     //--------------------------------------------------------------------------
     //  Complete denitialization.
@@ -95,6 +102,14 @@ void Game::InnerRun()
     {
         if(s_event.type == SDL_QUIT)
             Game::Instance()->m_running = false;
+
+        else if(s_event.type == SDL_WINDOWEVENT)
+        {
+            if(s_event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                CoreLog::D("Resize: %d, %d", s_event.window.data1, s_event.window.data2);
+            }
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -109,7 +124,7 @@ void Game::InnerRun()
     // Show the FPS info.
     if(Game::Instance()->m_fpsTime >= 1.0f)
     {
-        Cooper::Log::I("FPS: %d", Game::Instance()->m_fpsFrames);
+        CoreLog::I("FPS: %d", Game::Instance()->m_fpsFrames);
         Game::Instance()->m_fpsTime   = 0;
         Game::Instance()->m_fpsFrames = 0;
     }
@@ -117,7 +132,8 @@ void Game::InnerRun()
 
 void Game::Run()
 {
-    COOPER_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
+    COREASSERT_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
+    COREASSERT_ASSERT(Instance()->m_pBaseEntity, "m_pBaseEntity can't be null");
 
     Instance()->m_running = true;
     Instance()->m_timer.Reset();
@@ -145,6 +161,16 @@ void Game::Run()
     #endif //EMSCRIPTEN
 }
 
+//----------------------------------------------------------------------------//
+// Root Entity                                                                //
+//----------------------------------------------------------------------------//
+void Game::SetRootEntity(Entity::UPtr pEntity) noexcept
+{
+    COREASSERT_ASSERT(pEntity != nullptr, "pEntity can't be null");
+
+    pEntity->Size(m_pGraphics->GetScreenSize());
+    m_pBaseEntity = std::move(pEntity);
+}
 
 //----------------------------------------------------------------------------//
 // Update Functions.                                                          //

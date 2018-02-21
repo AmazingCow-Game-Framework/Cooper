@@ -20,11 +20,6 @@
 
 // Header
 #include "include/Graphics/Graphics.h"
-// Cooper
-#include "include/Log/Log.h"
-// AmazingCow Libs
-#include "acow/sdl_goodies.h"
-
 
 // Usings
 using namespace Cooper;
@@ -111,7 +106,7 @@ void Graphics::Init(const Options &options) noexcept
 
 void Graphics::Init(int width, int height, const std::string &caption)
 {
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         !Instance()->Initialized(),
         "Graphics is already initialized."
     );
@@ -153,7 +148,7 @@ void Graphics::Init(int width, int height, const std::string &caption)
 
 void Graphics::Shutdown()
 {
-    COOPER_ASSERT(Instance()->Initialized(), "Graphics isn't initialized.");
+    COREASSERT_ASSERT(Instance()->Initialized(), "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Unload the subsystems.
@@ -177,7 +172,7 @@ bool Graphics::Initialized()
 //----------------------------------------------------------------------------//
 void Graphics::SetScreenCaption(const std::string &caption)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     m_caption = caption;
     SDL_SetWindowTitle(
@@ -192,7 +187,7 @@ void Graphics::SetScreenCaption(const std::string &caption)
 //----------------------------------------------------------------------------//
 SDL_Texture* Graphics::LoadTexture(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized");
 
     //--------------------------------------------------------------------------
     // To load a texture in SDL we must:
@@ -205,7 +200,7 @@ SDL_Texture* Graphics::LoadTexture(const std::string &path)
     //--------------------------------------------------------------------------
     // 1 - Loads the surface.
     auto p_surface = IMG_Load(path.c_str());
-    COOPER_VERIFY(
+    COREASSERT_VERIFY(
         p_surface, //Surface must be not null...
         "Failed to load image at:(%s)\nIMG_Error: %s",
         path.c_str(),
@@ -215,7 +210,7 @@ SDL_Texture* Graphics::LoadTexture(const std::string &path)
     //--------------------------------------------------------------------------
     // 2 - Create the texture from surface.
     auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer.get(), p_surface);
-    COOPER_VERIFY(
+    COREASSERT_VERIFY(
         p_surface, //Texture must be not null...
         "Failed to create texture from surface: (%s)\nSDL_Error: %s",
         path.c_str(),
@@ -256,7 +251,7 @@ SDL_Texture* Graphics::CreateFontTexture(
         Math::ColorWhite
     );
 
-    COOPER_VERIFY(
+    COREASSERT_VERIFY(
         p_surface, //Surface must be not null...
         "Failed to render text:(%s)\nTTF_Error: %s",
         contents.c_str(),
@@ -268,7 +263,7 @@ SDL_Texture* Graphics::CreateFontTexture(
     // 2 - Create the texture from surface.
     auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer.get(), p_surface);
 
-    COOPER_VERIFY(
+    COREASSERT_VERIFY(
         p_surface, //Texture must be not null...
         "Failed to create texture from text surface: (%s)\nSDL_Error: %s",
         contents.c_str(),
@@ -329,7 +324,7 @@ void Graphics::RenderTexture(
     SDL_RendererFlip    flip,   /* = SDL_FLIP_NONE */
     float               opacity /* = 1.0f          */)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     //  Prepare the Texture to take alpha info.
@@ -358,7 +353,7 @@ void Graphics::RenderRect(
     const SDL_Rect  &rect,
     const SDL_Color &c /* = Math::ColorWhite */)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.
@@ -387,7 +382,7 @@ void Graphics::RenderCircle(
     const SDL_Color &color /* = Math::ColorWhite */,
     int              sides /* = -1               */)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     if(sides < 0)
@@ -418,7 +413,7 @@ void Graphics::RenderCircle(
 // Line.
 void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const SDL_Color& c)
 {
-    COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.

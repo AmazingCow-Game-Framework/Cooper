@@ -22,9 +22,11 @@
 #include "include/Sound/Sound.h"
 // std
 #include <map>
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
+#include "CoreAssert/CoreAssert.h"
+#include "CoreLog/CoreLog.h"
 // Cooper
-#include "include/Log/Log.h"
-#include "include/Macros/Macros.h"
 #include "include/Memory/Memory.h"
 // Cooper Sound - Private.
 #include "src/Sound/private/AudioLib.h"
@@ -51,7 +53,7 @@ namespace {
 //----------------------------------------------------------------------------//
 void Sound::Init()
 {
-    COOPER_ASSERT(!m_initialized, "Sound is already initialized.");
+    COREASSERT_ASSERT(!m_initialized, "Sound is already initialized.");
 
     //--------------------------------------------------------------------------
     // Init the Audio subsystem.
@@ -78,7 +80,7 @@ void Sound::Init()
 
 void Sound::Shutdown()
 {
-    COOPER_ASSERT(m_initialized, "Sound isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Sound isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Init the Audio subsystem.
@@ -111,7 +113,7 @@ bool Sound::Initialized()
 //----------------------------------------------------------------------------//
 void Sound::PreloadSound(const std::vector<std::string> &soundNames)
 {
-    COOPER_ASSERT(m_initialized, "Sound isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Sound isn't initialized.");
 
     for(const auto &sound_name : soundNames)
     {
@@ -133,22 +135,26 @@ void Sound::PreloadSound(const std::vector<std::string> &soundNames)
 
 void Sound::FreeSound(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "Sound isn't initialized.");
-    COOPER_ASSERT(IsLoaded(path), "Freeing a not loaded Sound: %s", path.c_str());
+    COREASSERT_ASSERT(m_initialized, "Sound isn't initialized.");
+    COREASSERT_ASSERT(
+        IsLoaded(path),
+        "Freeing a not loaded Sound: %s",
+        path.c_str()
+    );
 
     m_audioMap.erase(path);
 }
 
 bool Sound::IsLoaded(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "Sound isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Sound isn't initialized.");
     return m_audioMap.find(path) != std::end(m_audioMap);
 }
 
 
 void Sound::PlaySound(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "Sound isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Sound isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Assume that sound isn't loaded.

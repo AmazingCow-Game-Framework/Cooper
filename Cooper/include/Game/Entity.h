@@ -19,9 +19,9 @@
 //---------------------------------------------------------------------------~//
 
 #pragma once
-
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
 // Cooper
-#include "include/Macros/Macros.h"
 #include "include/Math/Math.h"
 
 namespace Cooper {
@@ -35,7 +35,7 @@ class Entity
     // Enums / Constants / Typedefs                                           //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SMART_PTRS_OF(Entity);
+    ACOW_SMART_PTRS_OF(Entity);
 
     enum class Space { Local, World };
 
@@ -191,5 +191,5 @@ protected:
     Graphics *m_pGraphicsRef;
     Game     *m_pGameRef;
 
-}; //class Entity
-} //namespace Cooper
+}; // class Entity
+}  // namespace Cooper
