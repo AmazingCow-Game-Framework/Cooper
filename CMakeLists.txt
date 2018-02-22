@@ -46,6 +46,7 @@ add_subdirectory(lib/CoreAssert      )
 add_subdirectory(lib/CoreRandom      )
 add_subdirectory(lib/CoreString      )
 add_subdirectory(lib/CoreLog         )
+add_subdirectory(lib/CoreFS          )
 add_subdirectory(lib/libtermcolor    )
 add_subdirectory(lib/acow_nt_posix   )
 add_subdirectory(lib/acow_cpp_goodies)
@@ -64,20 +65,24 @@ add_library(Cooper
     Cooper/src/Game/Entity.cpp
     Cooper/src/Game/Game.cpp
     Cooper/src/Game/RES.cpp
+
     ## Graphics
     Cooper/src/Graphics/Graphics.cpp
     Cooper/src/Graphics/TextEntity.cpp
     Cooper/src/Graphics/TextureAtlas.cpp
     Cooper/src/Graphics/TextureEntity.cpp
+    Cooper/src/Graphics/Color.cpp
+
     ## Input
     Cooper/src/Input/Input.cpp
 
-    ## Sount
+    ## Sound
     Cooper/src/Sound/Sound.cpp
     Cooper/src/Sound/private/AudioLib.cpp
     Cooper/src/Sound/private/emscripten/AudioValues.cpp
     Cooper/src/Sound/private/SDL/AudioValues.cpp
 
+    ## Time
     Cooper/src/Timer/Timer.cpp
 )
 
@@ -97,6 +102,7 @@ target_include_directories(Cooper PUBLIC ./lib/acow_sdl_goodies     )
 target_link_libraries(Cooper LINK_PUBLIC CoreAssert             )
 target_link_libraries(Cooper LINK_PUBLIC CoreRandom             )
 target_link_libraries(Cooper LINK_PUBLIC CoreLog                )
+target_link_libraries(Cooper LINK_PUBLIC CoreFS                 )
 target_link_libraries(Cooper LINK_PUBLIC libtermcolor           )
 target_link_libraries(Cooper LINK_PUBLIC acow_nt_posix          )
 target_link_libraries(Cooper LINK_PUBLIC acow_cpp_goodies       )
