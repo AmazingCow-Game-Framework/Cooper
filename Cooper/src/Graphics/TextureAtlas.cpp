@@ -26,6 +26,7 @@
 #include <vector>
 // AmazingCow Libs
 #include "CoreAssert/CoreAssert.h"
+#include "CoreFS/CoreFS.h"
 // Cooper
 #include "include/Game/RES.h"
 #include "include/Memory/Memory.h"
@@ -92,8 +93,9 @@ void TextureAtlas::LoadFromFile()
 
     COREASSERT_VERIFY(
         file_stream.is_open(),
-        "Can't open TextureAtlas: %s",
-        m_atlasPath.c_str()
+        "Can't open TextureAtlas: (%s) - CWD: (%s) ",
+        m_atlasPath.c_str(),
+        CoreFS::CurrentDirectory().c_str()
     );
 
     while(!file_stream.eof())
