@@ -100,7 +100,7 @@ void Graphics::Init(const Options &options) noexcept
     Instance()->m_height  = options.win_Height;
     Instance()->m_caption = options.win_Caption;
 
-    Instance()->SetClearColor(Math::ColorBlack);
+    Instance()->SetClearColor(Color::White);
 }
 
 
@@ -143,7 +143,7 @@ void Graphics::Init(int width, int height, const std::string &caption)
     Instance()->m_height  = height;
     Instance()->m_caption = caption;
 
-    Instance()->SetClearColor(Math::ColorBlack);
+    Instance()->SetClearColor(Color::Black);
 }
 
 void Graphics::Shutdown()
@@ -248,7 +248,7 @@ SDL_Texture* Graphics::CreateFontTexture(
     auto p_surface = TTF_RenderText_Solid(
         pFont,
         contents.c_str(),
-        Math::ColorWhite
+        Color::White
     );
 
     COREASSERT_VERIFY(
@@ -351,7 +351,7 @@ void Graphics::RenderTexture(
 // Rectangle.
 void Graphics::RenderRect(
     const SDL_Rect  &rect,
-    const SDL_Color &c /* = Math::ColorWhite */)
+    const Color     &c /* = Color::White*/)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
@@ -378,9 +378,10 @@ void Graphics::RenderRect(
 // Circle.
 void Graphics::RenderCircle(
     const Vec2      &center,
-    float            radius,
-    const SDL_Color &color /* = Math::ColorWhite */,
-    int              sides /* = -1               */)
+    const Vec2   &center,
+    float         radius,
+    const Color  &color /* = Color::White */,
+    int           sides /* = -1           */)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
@@ -411,7 +412,7 @@ void Graphics::RenderCircle(
 
 //------------------------------------------------------------------------------
 // Line.
-void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const SDL_Color& c)
+void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const Color& c)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 

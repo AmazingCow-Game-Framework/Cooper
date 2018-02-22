@@ -33,9 +33,9 @@ using namespace Cooper;
 //----------------------------------------------------------------------------//
 TextEntity::TextEntity(
     const std::string &path,
-    int                size,
+    int               size,
     const std::string &contents,
-    const SDL_Color   &color /*=  Math::ColorBlack */) :
+    const Color       &color /* = Color::Black */) :
     // Members
     m_pFont              (       nullptr),
     m_pManagedTexture    (       nullptr),
