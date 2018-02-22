@@ -127,7 +127,7 @@ void RES::Shutdown()
     m_pGraphics   = nullptr;
 }
 
-bool RES::Initialized()
+bool RES::IsInitialized()
 {
     return m_initialized;
 }
@@ -146,7 +146,7 @@ const std::string& RES::GetBasePath()
     return m_basePath;
 }
 
-std::string RES::Fullpath(const std::string &path)
+std::string RES::GetFullpath(const std::string &path)
 {
     //COWTODO(n2omatt): Improve...
     return m_basePath + path;

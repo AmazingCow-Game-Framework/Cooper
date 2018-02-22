@@ -102,7 +102,7 @@ void Sound::Shutdown()
 }
 
 
-bool Sound::Initialized()
+bool Sound::IsInitialized()
 {
     return m_initialized;
 }

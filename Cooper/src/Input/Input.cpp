@@ -99,7 +99,7 @@ void Input::Shutdown()
     m_initialized = false;
 }
 
-bool Input::Initialized()
+bool Input::IsInitialized()
 {
     return m_initialized;
 }
@@ -158,21 +158,21 @@ bool Input::HasKeyboardInput()
     return m_hasKeyboardInput;
 }
 
-bool Input::KeyDown(SDL_Scancode key)
+bool Input::IsKeyDown(SDL_Scancode key)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_pCurrKeyboardState[key];
 }
 
-bool Input::KeyPress(SDL_Scancode key)
+bool Input::IsKeyPress(SDL_Scancode key)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return !m_pPrevKeyboardState[key] && m_pCurrKeyboardState[key];
 }
 
-bool Input::KeyRelease(SDL_Scancode key)
+bool Input::IsKeyRelease(SDL_Scancode key)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
@@ -190,7 +190,7 @@ bool Input::HasMouseInput()
     return m_hasMouseInput;
 }
 
-const Vec2& Input::MousePosition()
+const Vec2& Input::GetMousePosition()
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
@@ -202,14 +202,14 @@ const Vec2& Input::MousePosition()
     return s_mouse_pos;
 }
 
-bool Input::MouseButtonDown(int button)
+bool Input::IsMouseButtonDown(int button)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_currMouseState && SDL_BUTTON(button);
 }
 
-bool Input::MouseButtonPress(int button)
+bool Input::IsMouseButtonPress(int button)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
@@ -221,7 +221,7 @@ bool Input::MouseButtonPress(int button)
         &&  (m_currMouseState & SDL_BUTTON(button));
 }
 
-bool Input::MouseButtonRelease(int button)
+bool Input::IsMouseButtonRelease(int button)
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 

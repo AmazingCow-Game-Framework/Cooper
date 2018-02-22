@@ -36,7 +36,7 @@ namespace Input
     void Init    ();
     void Shutdown();
 
-    bool Initialized();
+    bool IsInitialized();
 
     void Update    ();
     void PostUpdate();
@@ -51,15 +51,15 @@ namespace Input
 
     //--------------------------------------------------------------------------
     // True every time that key is down.
-    bool KeyDown(SDL_Scancode key);
+    bool IsKeyDown(SDL_Scancode key);
 
     //--------------------------------------------------------------------------
     // True only on the frame that key is down.
-    bool KeyPress(SDL_Scancode key);
+    bool IsKeyPress(SDL_Scancode key);
 
     //--------------------------------------------------------------------------
     // True only on the frame that key is up.
-    bool KeyRelease(SDL_Scancode key);
+    bool IsKeyRelease(SDL_Scancode key);
 
 
     //------------------------------------------------------------------------//
@@ -71,20 +71,20 @@ namespace Input
 
     //--------------------------------------------------------------------------
     // The position of mouse - Relative to the screen.
-    const Vec2& MousePosition();
+    const Vec2& GetMousePosition();
 
     //COWTODO(n2omatt): Should we use a enumeration to better reading?
     //--------------------------------------------------------------------------
     // True every time that button is down.
-    bool MouseButtonDown(int button);
+    bool IsMouseButtonDown(int button);
 
     //--------------------------------------------------------------------------
     // True only on the frame that button is down.
-    bool MouseButtonPress(int button);
+    bool IsMouseButtonPress(int button);
 
     //--------------------------------------------------------------------------
     // True only on the frame that button is up.
-    bool MouseButtonRelease(int button);
+    bool IsMouseButtonRelease(int button);
 
 } // namespace Input
 } // namespace Cooper

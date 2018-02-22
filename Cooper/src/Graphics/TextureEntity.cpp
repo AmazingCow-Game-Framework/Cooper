@@ -46,7 +46,7 @@ TextureEntity::TextureEntity(
     m_pTexture = RES::GetTexture(path);
 
     // The function will calculate the actual rectangle.
-    RenderRect(rect);
+    SetRenderRect(rect);
 }
 
 TextureEntity::~TextureEntity()
@@ -62,7 +62,7 @@ void TextureEntity::Render()
 {
     //--------------------------------------------------------------------------
     // We're fully transparent - So don't need spend cycles drawing it.
-    if(m_opacity <= 0.0f || !Visible())
+    if(m_opacity <= 0.0f || !IsVisible())
         return;
 
     //--------------------------------------------------------------------------
@@ -70,7 +70,7 @@ void TextureEntity::Render()
     m_pGraphicsRef->RenderTexture(
         m_pTexture,
         m_renderRect,
-        BoundingRect(),
+        GetBoundingRect(),
         0,
         SDL_Point{},
         SDL_RendererFlip(m_flip),

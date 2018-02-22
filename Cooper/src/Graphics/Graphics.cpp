@@ -101,13 +101,24 @@ void Graphics::Init(const Options &options) noexcept
     Instance()->m_caption = options.win_Caption;
 
     Instance()->SetClearColor(Color::White);
+
+
+//    SDL_RenderSetLogicalSize(
+//            Instance()->m_pRenderer.get(),
+//            options.win_Width  * 0.7,
+//            options.win_Height * 0.7
+//    );
+
+//    SDL_RenderSetLogicalSize
+//    SDL_RenderSetIntegerScale
+//    SDL_RenderSetScale
 }
 
 
 void Graphics::Init(int width, int height, const std::string &caption)
 {
     COREASSERT_ASSERT(
-        !Instance()->Initialized(),
+        !Instance()->IsInitialized(),
         "Graphics is already initialized."
     );
 
@@ -148,7 +159,7 @@ void Graphics::Init(int width, int height, const std::string &caption)
 
 void Graphics::Shutdown()
 {
-    COREASSERT_ASSERT(Instance()->Initialized(), "Graphics isn't initialized.");
+    COREASSERT_ASSERT(Instance()->IsInitialized(), "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Unload the subsystems.
@@ -161,7 +172,7 @@ void Graphics::Shutdown()
     Instance()->m_initialized = false;
 }
 
-bool Graphics::Initialized()
+bool Graphics::IsInitialized()
 {
     return Instance()->m_initialized;
 }
@@ -377,7 +388,6 @@ void Graphics::RenderRect(
 //------------------------------------------------------------------------------
 // Circle.
 void Graphics::RenderCircle(
-    const Vec2      &center,
     const Vec2   &center,
     float         radius,
     const Color  &color /* = Color::White */,

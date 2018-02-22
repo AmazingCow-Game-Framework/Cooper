@@ -43,9 +43,9 @@ TextEntity::TextEntity(
     m_overridenRenderRect(         false),
     m_opacity            (          1.0f)
 {
-    SetFont (path, size);
-    Contents(contents  );
-    Color   (color     );
+    SetFont    (path, size);
+    SetContents(contents  );
+    SetColor   (color     );
 }
 
 
@@ -60,7 +60,7 @@ void TextEntity::SetFont(const std::string &path, int size)
 }
 
 // Contents.
-void TextEntity::Contents(const std::string &contents)
+void TextEntity::SetContents(const std::string &contents)
 {
     m_contents = contents;
     UpdateTexture();
@@ -82,7 +82,7 @@ void TextEntity::UpdateTexture()
 
     UpdateRenderRect();
     UpdateColor     ();
-    Size(Vec2(m_renderRect.w,m_renderRect.h));
+    SetSize(Vec2(m_renderRect.w, m_renderRect.h));
 }
 
 
@@ -122,12 +122,12 @@ void TextEntity::Render()
 {
     //--------------------------------------------------------------------------
     //Nothing to draw - So don't need spend cycles drawing it.
-    if(m_opacity <= 0.0f || m_contents.empty() || !m_pFont || !Visible())
+    if(m_opacity <= 0.0f || m_contents.empty() || !m_pFont || !IsVisible())
         return;
 
     //--------------------------------------------------------------------------
     // Update the destination rect.
-    auto dst = BoundingRect();
+    auto dst = GetBoundingRect();
     dst.w    = m_renderRect.w;
     dst.h    = m_renderRect.h;
 

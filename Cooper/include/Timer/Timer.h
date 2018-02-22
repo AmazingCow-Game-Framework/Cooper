@@ -50,14 +50,14 @@ public:
     // Delta Time                                                             //
     //------------------------------------------------------------------------//
 public:
-    inline float DeltaTime() const { return m_deltaTime; }
+    inline float GetDeltaTime() const { return m_deltaTime; }
 
 
     //------------------------------------------------------------------------//
     // Total Time                                                             //
     //------------------------------------------------------------------------//
 public:
-    inline float TotalTime() const { return m_totalTime; }
+    inline float GetTotalTime() const { return m_totalTime; }
 
 
     //------------------------------------------------------------------------//
@@ -65,9 +65,9 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Setter.
-    inline void TimeScale(float timeScale = 1.0f) { m_timeScale = timeScale; }
+    inline void SetTimeScale(float timeScale = 1.0f) { m_timeScale = timeScale; }
     // Getter.
-    inline float TimeScale() const { return m_timeScale; }
+    inline float GetTimeScale() const { return m_timeScale; }
 
 
     //------------------------------------------------------------------------//
