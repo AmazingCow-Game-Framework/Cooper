@@ -25,3 +25,9 @@
 [submodule "lib/CoreFS"]
 	path = lib/CoreFS
 	url = https://github.com/AmazingCow-Libs/CoreFS
+[submodule "lib/acow_c_goodies"]
+	path = lib/acow_c_goodies
+	url = https://github.com/AmazingCow-Libs/acow_c_goodies
+[submodule "lib/acow_math_goodies"]
+	path = lib/acow_math_goodies
+	url = https://github.com/AmazingCow-Libs/acow_math_goodies

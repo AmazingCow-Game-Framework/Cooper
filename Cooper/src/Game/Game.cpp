@@ -43,19 +43,20 @@ using namespace Cooper;
 //----------------------------------------------------------------------------//
 Game::Game()
 {
-    //Empty...
+    // Empty...
 }
 
 Game::~Game()
 {
-    //Empty...
+    // Empty...
 }
 
 
 //----------------------------------------------------------------------------//
 // Lifecycle Functions.                                                       //
 //----------------------------------------------------------------------------//
-void Game::Init(int /** targetFPS **/)
+void
+Game::Init(u32 /** targetFPS **/)
 {
     COREASSERT_ASSERT(
         !Instance()->m_initialized,
@@ -64,31 +65,34 @@ void Game::Init(int /** targetFPS **/)
 
     //--------------------------------------------------------------------------
     // Cache stuff for performance.
-    Instance()->m_pGraphics = Graphics::Instance();
+    Instance()->m_pGraphicsRef = Graphics::Instance();
 
     //--------------------------------------------------------------------------
     // Other stuff.
     Instance()->m_initialized = true;
 }
 
-void Game::Shutdown()
+void
+Game::Shutdown()
 {
     COREASSERT_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
 
     //--------------------------------------------------------------------------
-    //  Complete denitialization.
-    Instance()->m_initialized = false;
-    Instance()->m_running     = false;
-    Instance()->m_pGraphics   = nullptr;
+    // Complete shutdown.
+    Instance()->m_initialized  = false;
+    Instance()->m_running      = false;
+    Instance()->m_pGraphicsRef = nullptr;
 }
 
-bool Game::IsInitialized()
+bool
+Game::IsInitialized()
 {
     return Instance()->m_initialized;
 }
 
 
-void Game::InnerRun()
+void
+Game::InnerRun()
 {
     Game::Instance()->m_timer.Update();
 
@@ -129,9 +133,9 @@ void Game::InnerRun()
 //                        SDL_TRUE
 //                );
                 SDL_RenderSetLogicalSize(
-                        Instance()->m_pGraphics->m_pRenderer.get(),
-                        Instance()->m_pGraphics->m_width,
-                        Instance()->m_pGraphics->m_height
+                        Instance()->m_pGraphicsRef->m_pRenderer.get(),
+                        Instance()->m_pGraphicsRef->m_width,
+                        Instance()->m_pGraphicsRef->m_height
                 );
 
                 SDL_SetHintWithPriority(
@@ -163,8 +167,11 @@ void Game::InnerRun()
     }
 }
 
-void Game::Run()
+void
+Game::Run()
 {
+    //--------------------------------------------------------------------------
+    // Sanity checks.
     COREASSERT_ASSERT(Instance()->m_initialized, "Game isn't initialized.");
     COREASSERT_ASSERT(Instance()->m_pBaseEntity, "m_pBaseEntity can't be null");
 
@@ -197,23 +204,27 @@ void Game::Run()
 //----------------------------------------------------------------------------//
 // Root Entity                                                                //
 //----------------------------------------------------------------------------//
-void Game::SetRootEntity(Entity::UPtr pEntity) noexcept
+void
+Game::SetRootEntity(Entity::UPtr pEntity) noexcept
 {
     COREASSERT_ASSERT(pEntity != nullptr, "pEntity can't be null");
 
-    pEntity->SetSize(m_pGraphics->GetScreenSize());
+    pEntity->SetSize(m_pGraphicsRef->GetScreenSize());
     m_pBaseEntity = std::move(pEntity);
 }
+
 
 //----------------------------------------------------------------------------//
 // Update Functions.                                                          //
 //----------------------------------------------------------------------------//
-void Game::PreUpdate()
+void
+Game::PreUpdate()
 {
     //COWNOTE(n2omatt): Empty by now...
 }
 
-void Game::Update()
+void
+Game::Update()
 {
     Input::Update();
 
@@ -221,7 +232,8 @@ void Game::Update()
     m_timer.Reset();
 }
 
-void Game::PostUpdate()
+void
+Game::PostUpdate()
 {
     Input::PostUpdate();
 }
@@ -230,9 +242,10 @@ void Game::PostUpdate()
 //----------------------------------------------------------------------------//
 // Render Functions                                                           //
 //----------------------------------------------------------------------------//
-void Game::Render()
+void
+Game::Render()
 {
-    m_pGraphics->Clear();
+    m_pGraphicsRef->Clear();
         m_pBaseEntity->Render();
-    m_pGraphics->Present();
+    m_pGraphicsRef->Present();
 }

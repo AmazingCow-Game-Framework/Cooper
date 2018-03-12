@@ -25,6 +25,7 @@
 #include <string>
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
+#include "acow/math_goodies.h"
 // Cooper
 #include "include/Graphics/TextureEntity.h"
 
@@ -65,7 +66,7 @@ public:
     //--------------------------------------------------------------------------
     // Gets the rectangle described by the key.
     // This is useful to make an texture animation.
-    const SDL_Rect& GetRectangle(const std::string &key);
+    const acow::math::Rect& GetRectangle(const std::string &key);
 
 
     //------------------------------------------------------------------------//
@@ -79,9 +80,9 @@ private:
     // iVars                                                                  //
     //------------------------------------------------------------------------//
 private:
-    std::string                     m_atlasPath;
-    std::string                     m_texturesPath;
-    std::map<std::string, SDL_Rect> m_rectsMap;
+    std::string                             m_atlasPath;
+    std::string                             m_texturesPath;
+    std::map<std::string, acow::math::Rect> m_rectsMap;
 
 }; // class TextureAtlas
 }  // namespace Cooper

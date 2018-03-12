@@ -24,9 +24,10 @@
 #include <string>
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
+#include "acow/sdl_goodies.h"
+#include "acow/math_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
-#include "include/Math/Math.h"
 
 
 namespace Cooper {
@@ -48,17 +49,17 @@ public:
     //------------------------------------------------------------------------//
 public:
     explicit TextureEntity(
-        const std::string &path,
-        const Vec2        &pos  = Vec2::Zero(),
-        const SDL_Rect    &rect = Math::RectZero);
+        const std::string      &path,
+        const acow::math::Vec2 &pos  = acow::math::Vec2::Zero (),
+        const acow::math::Rect &rect = acow::math::Rect::Empty());
 
     explicit TextureEntity(
-        const std::string &path,
-        const SDL_Rect    &rect = Math::RectZero) :
+        const std::string     &path,
+        const acow::math::Rect&rect = acow::math::Rect::Empty())
         // Just forward the call.
-        TextureEntity(path, Vec2::Zero(), rect)
+        : TextureEntity(path, acow::math::Vec2::Zero(), rect)
     {
-        //Empty...
+        // Empty...
     }
 
     ~TextureEntity() override;
@@ -69,24 +70,18 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline SDL_Rect GetRenderRect() const { return m_renderRect; }
+    inline const acow::math::Rect&
+    GetRenderRect() const noexcept
+    {
+        return m_renderRect;
+    }
 
     // Setters.
-    inline void SetRenderRect(const SDL_Rect &rect)
+    inline void SetRenderRect(const acow::math::Rect &rect)
     {
         m_renderRect = rect;
-        if(m_renderRect.w == 0 || m_renderRect.h == 0)
-        {
-            SDL_QueryTexture(
-                m_pTexture,
-                nullptr,
-                nullptr,
-                &m_renderRect.w,
-                &m_renderRect.h
-            );
-        }
-
-        SetSize(m_renderRect.w, m_renderRect.h);
+        if(rect.IsEmpty())
+            SetSize(acow::sdl::Texture::QuerySize(m_pTextureRef));
     }
 
 
@@ -95,10 +90,10 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline float GetOpacity() const { return m_opacity; }
+    inline f32 GetOpacity() const noexcept { return m_opacity; }
 
     // Setters.
-    inline void SetOpacity(float opacity) { m_opacity = opacity; }
+    inline void SetOpacity(f32 opacity) noexcept { m_opacity = opacity; }
 
 
     //------------------------------------------------------------------------//
@@ -106,23 +101,33 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline bool FlipX() const { return m_flip & SDL_FLIP_HORIZONTAL; }
-    inline bool FlipY() const { return m_flip & SDL_FLIP_VERTICAL;   }
+    inline bool
+    FlipX() const noexcept
+    {
+        return ACOW_FLAG_HAS(SDL_FLIP_HORIZONTAL, m_flip);
+    }
+
+    inline bool
+    FlipY() const noexcept
+    {
+        return ACOW_FLAG_HAS(SDL_FLIP_VERTICAL, m_flip);
+    }
 
     // Setters.
-    inline void FlipX(bool b)
+    inline void
+    FlipX(bool b) noexcept
     {
-        m_flip = (b)
-            ? (m_flip | SDL_FLIP_HORIZONTAL)
-            : (m_flip & SDL_FLIP_VERTICAL  );
+        if(b) ACOW_FLAG_ADD   (u32(SDL_FLIP_HORIZONTAL), m_flip);
+        else  ACOW_FLAG_REMOVE(u32(SDL_FLIP_HORIZONTAL), m_flip);
     }
 
-    inline void FlipY(bool b)
+    inline void
+    FlipY(bool b) noexcept
     {
-        m_flip = (b)
-            ? (m_flip | SDL_FLIP_VERTICAL  )
-            : (m_flip & SDL_FLIP_HORIZONTAL);
+        if(b) ACOW_FLAG_ADD   (u32(SDL_FLIP_VERTICAL), m_flip);
+        else  ACOW_FLAG_REMOVE(u32(SDL_FLIP_VERTICAL), m_flip);
     }
+
 
     //------------------------------------------------------------------------//
     // Update / Render                                                        //
@@ -135,11 +140,11 @@ public:
     // iVars                                                                  //
     //------------------------------------------------------------------------//
 private:
-    SDL_Texture *m_pTexture;  // Weak pointer - Owned by RES.
-    SDL_Rect    m_renderRect; // Which part of the texture that will be drawn.
-    int         m_flip;
+    SDL_Texture      *m_pTextureRef;  // Weak poi32er - Owned by RES.
+    acow::math::Rect  m_renderRect;   // Which part of the texture that will be drawn.
+    i32               m_flip;
 
-    float m_opacity;
+    f32 m_opacity;
 
 }; // class TextureEntity
 }  // namespace Cooper

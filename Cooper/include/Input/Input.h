@@ -23,7 +23,7 @@
 // std
 #include <string>
 // Cooper
-#include "include/Math/Math.h"
+#include "acow/math_goodies.h"
 
 namespace Cooper {
 
@@ -36,7 +36,7 @@ namespace Input
     void Init    ();
     void Shutdown();
 
-    bool IsInitialized();
+    bool IsInitialized() noexcept;
 
     void Update    ();
     void PostUpdate();
@@ -51,15 +51,15 @@ namespace Input
 
     //--------------------------------------------------------------------------
     // True every time that key is down.
-    bool IsKeyDown(SDL_Scancode key);
+    bool IsKeyDown(u32 key);
 
     //--------------------------------------------------------------------------
     // True only on the frame that key is down.
-    bool IsKeyPress(SDL_Scancode key);
+    bool IsKeyPress(u32 key);
 
     //--------------------------------------------------------------------------
     // True only on the frame that key is up.
-    bool IsKeyRelease(SDL_Scancode key);
+    bool IsKeyRelease(u32 key);
 
 
     //------------------------------------------------------------------------//
@@ -71,20 +71,20 @@ namespace Input
 
     //--------------------------------------------------------------------------
     // The position of mouse - Relative to the screen.
-    const Vec2& GetMousePosition();
+    const acow::math::Vec2& GetMousePosition();
 
     //COWTODO(n2omatt): Should we use a enumeration to better reading?
     //--------------------------------------------------------------------------
     // True every time that button is down.
-    bool IsMouseButtonDown(int button);
+    bool IsMouseButtonDown(u8 button);
 
     //--------------------------------------------------------------------------
     // True only on the frame that button is down.
-    bool IsMouseButtonPress(int button);
+    bool IsMouseButtonPress(u8 button);
 
     //--------------------------------------------------------------------------
     // True only on the frame that button is up.
-    bool IsMouseButtonRelease(int button);
+    bool IsMouseButtonRelease(u8 button);
 
 } // namespace Input
 } // namespace Cooper

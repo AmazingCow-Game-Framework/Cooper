@@ -34,7 +34,7 @@ namespace Sound {
     void Init();
     void Shutdown();
 
-    bool IsInitialized();
+    bool IsInitialized() noexcept;
 
 
     //------------------------------------------------------------------------//

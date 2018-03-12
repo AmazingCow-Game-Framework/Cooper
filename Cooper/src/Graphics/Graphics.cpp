@@ -49,7 +49,8 @@ Graphics::~Graphics()
 //----------------------------------------------------------------------------//
 // Lifecycle Functions.                                                       //
 //----------------------------------------------------------------------------//
-void Graphics::Init(const Options &options) noexcept
+void
+Graphics::Init(const Options &options) noexcept
 {
     //--------------------------------------------------------------------------
     // Init Subsystems.
@@ -58,7 +59,6 @@ void Graphics::Init(const Options &options) noexcept
     acow::sdl::ttf::Init();
 
     // COWTODO(n2omatt): Validate options..
-
 
     //--------------------------------------------------------------------------
     // Create the window.
@@ -100,7 +100,7 @@ void Graphics::Init(const Options &options) noexcept
     Instance()->m_height  = options.win_Height;
     Instance()->m_caption = options.win_Caption;
 
-    Instance()->SetClearColor(Color::White);
+    Instance()->SetClearColor(acow::sdl::Color::White());
 
 
 //    SDL_RenderSetLogicalSize(
@@ -115,7 +115,8 @@ void Graphics::Init(const Options &options) noexcept
 }
 
 
-void Graphics::Init(int width, int height, const std::string &caption)
+void
+Graphics::Init(u16 width, u16 height, const std::string &caption)
 {
     COREASSERT_ASSERT(
         !Instance()->IsInitialized(),
@@ -154,10 +155,11 @@ void Graphics::Init(int width, int height, const std::string &caption)
     Instance()->m_height  = height;
     Instance()->m_caption = caption;
 
-    Instance()->SetClearColor(Color::Black);
+    Instance()->SetClearColor(acow::sdl::Color::Black());
 }
 
-void Graphics::Shutdown()
+void
+Graphics::Shutdown()
 {
     COREASSERT_ASSERT(Instance()->IsInitialized(), "Graphics isn't initialized.");
 
@@ -172,7 +174,8 @@ void Graphics::Shutdown()
     Instance()->m_initialized = false;
 }
 
-bool Graphics::IsInitialized()
+bool
+Graphics::IsInitialized() noexcept
 {
     return Instance()->m_initialized;
 }
@@ -181,7 +184,8 @@ bool Graphics::IsInitialized()
 //----------------------------------------------------------------------------//
 // Screen Functions                                                           //
 //----------------------------------------------------------------------------//
-void Graphics::SetScreenCaption(const std::string &caption)
+void
+Graphics::SetScreenCaption(const std::string &caption) noexcept
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
@@ -196,7 +200,8 @@ void Graphics::SetScreenCaption(const std::string &caption)
 //----------------------------------------------------------------------------//
 // Texture Creation Functions.                                                //
 //----------------------------------------------------------------------------//
-SDL_Texture* Graphics::LoadTexture(const std::string &path)
+SDL_Texture*
+Graphics::LoadTexture(const std::string &path)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized");
 
@@ -240,10 +245,11 @@ SDL_Texture* Graphics::LoadTexture(const std::string &path)
 
 //COWTODO(n2omatt): Today our text rendering functions are too inflexible
 //                  try to implement more rendering options.
-SDL_Texture* Graphics::CreateFontTexture(
-    TTF_Font          *pFont,
-    const std::string &contents,
-    SDL_Color          color)
+SDL_Texture*
+Graphics::CreateFontTexture(
+    TTF_Font               *pFont,
+    const std::string      &contents,
+    const acow::sdl::Color &color)
 {
     //--------------------------------------------------------------------------
     // To render a text in SDL we must:
@@ -259,7 +265,7 @@ SDL_Texture* Graphics::CreateFontTexture(
     auto p_surface = TTF_RenderText_Solid(
         pFont,
         contents.c_str(),
-        Color::White
+        SDL_Color(acow::sdl::Color::White())
     );
 
     COREASSERT_VERIFY(
@@ -282,7 +288,12 @@ SDL_Texture* Graphics::CreateFontTexture(
     );
 
     // Set its color.
-    SDL_SetTextureColorMod(p_texture, color.r, color.g, color.b);
+    SDL_SetTextureColorMod(
+        p_texture,
+        color.r * 0xFF,
+        color.g * 0xFF,
+        color.b * 0xFF
+    );
 
     //--------------------------------------------------------------------------
     // 3 - Free the surface.
@@ -294,10 +305,11 @@ SDL_Texture* Graphics::CreateFontTexture(
 }
 
 
-std::shared_ptr<SDL_Texture> Graphics::CreateFontTextureManaged(
-    TTF_Font          *pFont,
-    const std::string &contents,
-    SDL_Color          color)
+std::shared_ptr<SDL_Texture>
+Graphics::CreateFontTextureManaged(
+    TTF_Font               *pFont,
+    const std::string      &contents,
+    const acow::sdl::Color &color)
 {
     //--------------------------------------------------------------------------
     // Forward the creation - They are exactly equal, the only difference
@@ -327,13 +339,13 @@ std::shared_ptr<SDL_Texture> Graphics::CreateFontTextureManaged(
 //------------------------------------------------------------------------------
 // Texture.
 void Graphics::RenderTexture(
-    SDL_Texture         *pTexture,
-    const SDL_Rect      &srcRect,
-    const SDL_Rect      &dstRect,
-    float                angleDegrees,
-    const SDL_Point     &origin,
-    SDL_RendererFlip    flip,   /* = SDL_FLIP_NONE */
-    float               opacity /* = 1.0f          */)
+    SDL_Texture            *pTexture,
+    const acow::math::Rect  &srcRect,
+    const acow::math::Rect  &dstRect,
+    float                    angleDegrees,
+    const acow::math::Vec2  &origin,
+    SDL_RendererFlip         flip,   /* = SDL_FLIP_NONE */
+    float                    opacity /* = 1.0f          */) noexcept
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
@@ -341,18 +353,33 @@ void Graphics::RenderTexture(
     //  Prepare the Texture to take alpha info.
     SDL_SetTextureAlphaMod(
         pTexture,
-        Uint8(Math::Clamp<float>(opacity * 255.0f, 0, 255))
+        Uint8(acow::math::Clamp<float>(opacity * 255.0f, 0, 255))
     );
 
     //--------------------------------------------------------------------------
     //  Render it ;D
+    auto src_rect = SDL_Rect {
+        // COWTODO(n2omatt): Coversion operator.
+        int(srcRect.x),
+        int(srcRect.y),
+        int(srcRect.GetWidth()),
+        int(srcRect.GetHeight())
+    };
+    auto dst_rect = SDL_Rect {
+        // COWTODO(n2omatt): Coversion operator.
+        int(dstRect.x),
+        int(dstRect.y),
+        int(dstRect.GetWidth()),
+        int(dstRect.GetHeight())
+    };
+
     SDL_RenderCopyEx(
         m_pRenderer.get(),
         pTexture,
-        &srcRect,
-        &dstRect,
+        &src_rect,
+        &dst_rect,
         angleDegrees,
-        NULL,
+        nullptr,
         flip
     );
 }
@@ -361,26 +388,43 @@ void Graphics::RenderTexture(
 //------------------------------------------------------------------------------
 // Rectangle.
 void Graphics::RenderRect(
-    const SDL_Rect  &rect,
-    const Color     &c /* = Color::White*/)
+    const acow::math::Rect  &rect,
+    const acow::sdl::Color  &color /* = Color::White*/)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.
-    SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
+    SDL_SetRenderDrawColor(
+        m_pRenderer.get(),
+        u8(color.r * 0xFF),
+        u8(color.g * 0xFF),
+        u8(color.b * 0xFF),
+        0xFF
+    );
 
     //--------------------------------------------------------------------------
     // Render.
-    SDL_RenderDrawRect(m_pRenderer.get(), &rect);
+    auto sdl_rect = SDL_Rect {
+        // COWTODO(n2omatt): Conversion operator.
+        i32(rect.x),
+        i32(rect.y),
+        i32(rect.GetWidth ()),
+        i32(rect.GetHeight())
+    };
+
+    SDL_RenderDrawRect(
+        m_pRenderer.get(),
+        &sdl_rect
+    );
 
     //--------------------------------------------------------------------------
     // Make the renderer use our clear color.
     SDL_SetRenderDrawColor(
         m_pRenderer.get(),
-        m_clearColor.r,
-        m_clearColor.g,
-        m_clearColor.b,
+        u8(m_clearColor.r * 0xFF),
+        u8(m_clearColor.g * 0xFF),
+        u8(m_clearColor.b * 0xFF),
         0xFF
     );
 }
@@ -388,21 +432,21 @@ void Graphics::RenderRect(
 //------------------------------------------------------------------------------
 // Circle.
 void Graphics::RenderCircle(
-    const Vec2   &center,
-    float         radius,
-    const Color  &color /* = Color::White */,
-    int           sides /* = -1           */)
+    const acow::math::Vec2   &center,
+    f32                      radius,
+    const acow::sdl::Color  &color, /* = Color::White */
+    i32                      sides /* = -1           */)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     if(sides < 0)
-        sides = int((Math::k2PI * radius) / 0.5f);
+        sides = int((acow::math::k2PI * radius) / 0.5f);
 
     //--------------------------------------------------------------------------
-    auto delta_angle = Math::k2PI / sides;
+    auto delta_angle = acow::math::k2PI / sides;
     auto angle       = delta_angle;
-    auto end_point   = Vec2(radius + center.x, 0.0f + center.y);
+    auto end_point   = acow::math::Vec2(radius + center.x, 0.0f + center.y);
 
     //--------------------------------------------------------------------------
     for(int i = 0; i < sides; i++)
@@ -422,31 +466,39 @@ void Graphics::RenderCircle(
 
 //------------------------------------------------------------------------------
 // Line.
-void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const Color& c)
+void Graphics::RenderLine(
+    const acow::math::Vec2 &start,
+    const acow::math::Vec2 &end,
+    const acow::sdl::Color &color)
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.
-    SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
+    SDL_SetRenderDrawColor(
+        m_pRenderer.get(),
+        u8(color.r * 0xFF),
+        u8(color.g * 0xFF),
+        u8(color.b * 0xFF),
+        0xFF);
 
     //--------------------------------------------------------------------------
     // RenderTexture a line
     SDL_RenderDrawLine(
         m_pRenderer.get(),
-        int(start.x),
-        int(start.y),
-        int(  end.x),
-        int(  end.y)
+        i32(start.x),
+        i32(start.y),
+        i32(  end.x),
+        i32(  end.y)
     );
 
     //--------------------------------------------------------------------------
     // Make the renderer use our clear color.
     SDL_SetRenderDrawColor(
         m_pRenderer.get(),
-        m_clearColor.r,
-        m_clearColor.g,
-        m_clearColor.b,
+        u8(m_clearColor.r * 0xFF),
+        u8(m_clearColor.g * 0xFF),
+        u8(m_clearColor.b * 0xFF),
         0xFF
     );
 }

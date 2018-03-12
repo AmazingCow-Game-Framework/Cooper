@@ -29,7 +29,6 @@
 #include "CoreFS/CoreFS.h"
 // Cooper
 #include "include/Game/RES.h"
-#include "include/Memory/Memory.h"
 
 //Usings
 using namespace Cooper;
@@ -50,13 +49,13 @@ TextureAtlas::TextureAtlas(const std::string &path) :
 //----------------------------------------------------------------------------//
 TextureEntity::UPtr TextureAtlas::GetTexture(const std::string &key)
 {
-    return Cooper::make_unique<TextureEntity>(
+    return acow::make_unique<TextureEntity>(
         m_texturesPath,
         GetRectangle(key)
     );
 }
 
-const SDL_Rect& TextureAtlas::GetRectangle(const std::string &key)
+const acow::math::Rect& TextureAtlas::GetRectangle(const std::string &key)
 {
     auto it = m_rectsMap.find(key);
 
@@ -126,6 +125,6 @@ void TextureAtlas::LoadFromFile()
         SDL_Rect    rect;
         ss >> name >> rect.x >> rect.y >> rect.w >> rect.h;
 
-        m_rectsMap[name] = rect;
+        m_rectsMap[name] = acow::math::Rect(rect);
     }
 }
