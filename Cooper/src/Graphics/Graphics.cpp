@@ -354,24 +354,24 @@ void Graphics::RenderTexture(
     //  Prepare the Texture to take alpha info.
     SDL_SetTextureAlphaMod(
         pTexture,
-        Uint8(acow::math::Clamp<float>(opacity * 255.0f, 0, 255))
+        u8(acow::math::Clamp<float>(opacity * 255.0f, 0, 255))
     );
 
     //--------------------------------------------------------------------------
     //  Render it ;D
     auto src_rect = SDL_Rect {
         // COWTODO(n2omatt): Coversion operator.
-        int(srcRect.x),
-        int(srcRect.y),
-        int(srcRect.GetWidth()),
-        int(srcRect.GetHeight())
+        i32(srcRect.x),
+        i32(srcRect.y),
+        i32(srcRect.w),
+        i32(srcRect.h)
     };
     auto dst_rect = SDL_Rect {
         // COWTODO(n2omatt): Coversion operator.
-        int(dstRect.x),
-        int(dstRect.y),
-        int(dstRect.GetWidth()),
-        int(dstRect.GetHeight())
+        i32(dstRect.x),
+        i32(dstRect.y),
+        i32(dstRect.w),
+        i32(dstRect.h)
     };
 
     SDL_RenderCopyEx(
