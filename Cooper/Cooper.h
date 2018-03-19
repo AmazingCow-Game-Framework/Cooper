@@ -43,6 +43,7 @@
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 // AmazingCow Libs
+#include "acow/c_goodies.h"
 #include "acow/cpp_goodies.h"
 #include "acow/sdl_goodies.h"
 #include "acow/math_goodies.h"
