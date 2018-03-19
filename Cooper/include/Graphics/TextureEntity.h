@@ -79,9 +79,17 @@ public:
     // Setters.
     inline void SetRenderRect(const acow::math::Rect &rect)
     {
+        // COWTODO(n2omatt): Check if is we can render this rect....
+
         m_renderRect = rect;
+        SetSize(m_renderRect.w, m_renderRect.h);
+
         if(rect.IsEmpty())
-            SetSize(acow::sdl::Texture::QuerySize(m_pTextureRef));
+        {
+            auto new_rect = acow::sdl::Texture::QuerySize(m_pTextureRef);
+            m_renderRect = acow::math::Rect(0, 0, new_rect.x, new_rect.y);
+            SetSize(m_renderRect.w, m_renderRect.h);
+        }
     }
 
 
