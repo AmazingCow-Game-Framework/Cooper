@@ -342,10 +342,11 @@ void Graphics::RenderTexture(
     SDL_Texture            *pTexture,
     const acow::math::Rect  &srcRect,
     const acow::math::Rect  &dstRect,
-    float                    angleDegrees,
-    const acow::math::Vec2  &origin,
-    SDL_RendererFlip         flip,   /* = SDL_FLIP_NONE */
-    float                    opacity /* = 1.0f          */) noexcept
+    float                    angleDegrees, // = 0
+    const acow::math::Vec2  &origin,       // = acow::math::Vec2::Half()
+    SDL_RendererFlip         flip,         // = SDL_FLIP_NONE
+    float                    opacity       // = 1.0f
+) noexcept
 {
     COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
