@@ -194,6 +194,12 @@ public:
 
     //--------------------------------------------------------------------------
     // Texture.
+    inline void
+    SetRenderTextureDebugRects(bool enabled) noexcept
+    {
+        m_debugRenderTextureRects = enabled;
+    }
+
     void RenderTexture(
         SDL_Texture            *pTexture,
         const acow::math::Rect  &srcRect,
@@ -233,7 +239,7 @@ public:
     // Control.
     bool              m_initialized;
     acow::sdl::Color  m_clearColor;
-
+    bool              m_debugRenderTextureRects = false;
     // Window.
     i32         m_width;
     i32         m_height;

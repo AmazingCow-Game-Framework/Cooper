@@ -382,6 +382,9 @@ void Graphics::RenderTexture(
         nullptr,
         flip
     );
+
+    if(m_debugRenderTextureRects)
+        RenderRect(dstRect, acow::sdl::Color::Magenta());
 }
 
 
