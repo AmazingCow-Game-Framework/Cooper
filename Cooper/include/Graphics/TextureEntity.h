@@ -54,8 +54,8 @@ public:
         const acow::math::Rect &rect = acow::math::Rect::Empty());
 
     explicit TextureEntity(
-        const std::string     &path,
-        const acow::math::Rect&rect = acow::math::Rect::Empty())
+        const std::string      &path,
+        const acow::math::Rect &rect)
         // Just forward the call.
         : TextureEntity(path, acow::math::Vec2::Zero(), rect)
     {
