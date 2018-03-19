@@ -22,6 +22,9 @@
 #include "include/Graphics/Graphics.h"
 // Cooper
 #include "include/Log/Log.h"
+// AmazingCow Libs
+#include "acow/sdl_goodies.h"
+
 
 // Usings
 using namespace Cooper;
@@ -36,8 +39,8 @@ Graphics::Graphics() :
     m_width (0),
     m_height(0),
     // m_caption - Default init...
-    m_pWindow  (nullptr),
-    m_pRenderer(nullptr)
+    m_pWindow  (nullptr, nullptr),
+    m_pRenderer(nullptr, nullptr)
 {
     //Empty...
 }
@@ -51,6 +54,61 @@ Graphics::~Graphics()
 //----------------------------------------------------------------------------//
 // Lifecycle Functions.                                                       //
 //----------------------------------------------------------------------------//
+void Graphics::Init(const Options &options) noexcept
+{
+    //--------------------------------------------------------------------------
+    // Init Subsystems.
+    acow::sdl     ::Init(SDL_INIT_VIDEO);
+    acow::sdl::img::Init(IMG_INIT_PNG);
+    acow::sdl::ttf::Init();
+
+    // COWTODO(n2omatt): Validate options..
+
+
+    //--------------------------------------------------------------------------
+    // Create the window.
+    Instance()->m_pWindow = acow::sdl::Window::CreateUnique(
+        options.win_Caption,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        options.win_Width,
+        options.win_Height,
+        options.win_SDLFlags
+    );
+
+    SDL_SetWindowMinimumSize(
+        Instance()->m_pWindow.get(),
+        options.win_MinWidth,
+        options.win_MinHeight
+    );
+
+    SDL_SetWindowMaximumSize(
+        Instance()->m_pWindow.get(),
+        options.win_MaxWidth,
+        options.win_MaxHeight
+    );
+
+    //--------------------------------------------------------------------------
+    // Create Renderer.
+    Instance()->m_pRenderer = acow::sdl::Renderer::CreateUnique(
+        Instance()->m_pWindow.get(),
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
+
+
+    //--------------------------------------------------------------------------
+    // Other stuff.
+    Instance()->m_initialized = true;
+
+    Instance()->m_width   = options.win_Width;
+    Instance()->m_height  = options.win_Height;
+    Instance()->m_caption = options.win_Caption;
+
+    Instance()->SetClearColor(Math::ColorBlack);
+}
+
+
 void Graphics::Init(int width, int height, const std::string &caption)
 {
     COOPER_ASSERT(
@@ -58,57 +116,29 @@ void Graphics::Init(int width, int height, const std::string &caption)
         "Graphics is already initialized."
     );
 
-    //--------------------------------------------------------------------------
-    // Initialize Subsystems.
-    //   SDL_Video
-    COOPER_VERIFY(
-        SDL_Init(SDL_INIT_VIDEO) == 0,
-        "SDL_Init(SDL_INIT_VIDEO) failed\n:SDL_Error: %s",
-        SDL_GetError()
-    );
-    //  SDL_image
-    COOPER_VERIFY(
-        IMG_Init(IMG_INIT_PNG) != 0, //Init returns non zero on success...
-        "IMG_Init Error: %s",
-        IMG_GetError()
-    );
-    //  SDL_TTF
-    COOPER_VERIFY(
-        TTF_Init() == 0, //Init returns zero on success...
-        "TTF_Init Error: %s",
-        TTF_GetError()
-    );
+    acow::sdl     ::Init(SDL_INIT_VIDEO);
+    acow::sdl::img::Init(IMG_INIT_PNG);
+    acow::sdl::ttf::Init();
 
     //--------------------------------------------------------------------------
     // Create the window.
-    Instance()->m_pWindow = SDL_CreateWindow(
-        caption.c_str(),
+    Instance()->m_pWindow = acow::sdl::Window::CreateUnique(
+        caption,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         width,
         height,
-        SDL_WINDOW_SHOWN
-    );
-
-    COOPER_VERIFY(
-        Instance()->m_pWindow,
-        "Failed to create window\nSDL_Error: %s",
-        SDL_GetError()
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
     );
 
     //--------------------------------------------------------------------------
     // Create Renderer.
-    Instance()->m_pRenderer = SDL_CreateRenderer(
-        Instance()->m_pWindow,
+    Instance()->m_pRenderer = acow::sdl::Renderer::CreateUnique(
+        Instance()->m_pWindow.get(),
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
 
-    COOPER_VERIFY(
-        Instance()->m_pRenderer,
-        "Failed to create renderer\nSDL_Error: %s",
-        SDL_GetError()
-    );
 
     //--------------------------------------------------------------------------
     // Other stuff.
@@ -124,16 +154,6 @@ void Graphics::Init(int width, int height, const std::string &caption)
 void Graphics::Shutdown()
 {
     COOPER_ASSERT(Instance()->Initialized(), "Graphics isn't initialized.");
-
-    //--------------------------------------------------------------------------
-    // Renderer.
-    SDL_DestroyRenderer(Instance()->m_pRenderer);
-    Instance()->m_pRenderer = nullptr;
-
-    //--------------------------------------------------------------------------
-    // Window.
-    SDL_DestroyWindow(Instance()->m_pWindow);
-    Instance()->m_pWindow = nullptr;
 
     //--------------------------------------------------------------------------
     // Unload the subsystems.
@@ -161,7 +181,7 @@ void Graphics::SetScreenCaption(const std::string &caption)
 
     m_caption = caption;
     SDL_SetWindowTitle(
-        m_pWindow,
+        m_pWindow.get(),
         m_caption.c_str()
     );
 }
@@ -194,7 +214,7 @@ SDL_Texture* Graphics::LoadTexture(const std::string &path)
 
     //--------------------------------------------------------------------------
     // 2 - Create the texture from surface.
-    auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer, p_surface);
+    auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer.get(), p_surface);
     COOPER_VERIFY(
         p_surface, //Texture must be not null...
         "Failed to create texture from surface: (%s)\nSDL_Error: %s",
@@ -246,7 +266,7 @@ SDL_Texture* Graphics::CreateFontTexture(
 
     //--------------------------------------------------------------------------
     // 2 - Create the texture from surface.
-    auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer, p_surface);
+    auto p_texture = SDL_CreateTextureFromSurface(m_pRenderer.get(), p_surface);
 
     COOPER_VERIFY(
         p_surface, //Texture must be not null...
@@ -321,7 +341,7 @@ void Graphics::RenderTexture(
     //--------------------------------------------------------------------------
     //  Render it ;D
     SDL_RenderCopyEx(
-        m_pRenderer,
+        m_pRenderer.get(),
         pTexture,
         &srcRect,
         &dstRect,
@@ -342,16 +362,16 @@ void Graphics::RenderRect(
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.
-    SDL_SetRenderDrawColor(m_pRenderer, c.r, c.g, c.b, 0xFF);
+    SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
 
     //--------------------------------------------------------------------------
     // Render.
-    SDL_RenderDrawRect(m_pRenderer, &rect);
+    SDL_RenderDrawRect(m_pRenderer.get(), &rect);
 
     //--------------------------------------------------------------------------
     // Make the renderer use our clear color.
     SDL_SetRenderDrawColor(
-        m_pRenderer,
+        m_pRenderer.get(),
         m_clearColor.r,
         m_clearColor.g,
         m_clearColor.b,
@@ -402,12 +422,12 @@ void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const SDL_Color& c
 
     //--------------------------------------------------------------------------
     // Push the new color - So the rendering will be on that.
-    SDL_SetRenderDrawColor(m_pRenderer, c.r, c.g, c.b, 0xFF);
+    SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
 
     //--------------------------------------------------------------------------
     // RenderTexture a line
     SDL_RenderDrawLine(
-        m_pRenderer,
+        m_pRenderer.get(),
         int(start.x),
         int(start.y),
         int(  end.x),
@@ -417,7 +437,7 @@ void Graphics::RenderLine(const Vec2 &start, const Vec2 &end, const SDL_Color& c
     //--------------------------------------------------------------------------
     // Make the renderer use our clear color.
     SDL_SetRenderDrawColor(
-        m_pRenderer,
+        m_pRenderer.get(),
         m_clearColor.r,
         m_clearColor.g,
         m_clearColor.b,
