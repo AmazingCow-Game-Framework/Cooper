@@ -59,6 +59,9 @@ add_library(Cooper
     Cooper/src/Sound/private/AudioLib.cpp
     Cooper/src/Sound/private/emscripten/AudioValues.cpp
     Cooper/src/Sound/private/SDL/AudioValues.cpp
+
+    ## Private
+    Cooper/src/private/Logger/Logger.cpp
 )
 
 target_include_directories(Cooper PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
