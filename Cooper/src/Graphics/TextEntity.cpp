@@ -32,16 +32,16 @@ using namespace Cooper;
 // CTOR / DTOR                                                                //
 //----------------------------------------------------------------------------//
 TextEntity::TextEntity(
-    const std::string &path,
-    int               size,
-    const std::string &contents,
-    const Color       &color /* = Color::Black */) :
-    // Members
-    m_pFont              (       nullptr),
-    m_pManagedTexture    (       nullptr),
-    m_renderRect         (Math::RectZero),
-    m_overridenRenderRect(         false),
-    m_opacity            (          1.0f)
+    const std::string      &path,
+    int                    size,
+    const std::string      &contents,
+    const acow::sdl::Color &color /* = Color::Black */)
+    // Member
+    : m_pFontRef           (                  nullptr)
+    , m_pManagedTexture    (                  nullptr)
+    , m_renderRect         (acow::math::Rect::Empty())
+    , m_overridenRenderRect(                    false)
+    , m_opacity            (                     1.0f)
 {
     SetFont    (path, size);
     SetContents(contents  );
@@ -55,14 +55,22 @@ TextEntity::TextEntity(
 // Font.
 void TextEntity::SetFont(const std::string &path, int size)
 {
-    m_pFont = RES::GetFont(path, size);
+    m_pFontRef = RES::GetFont(path, size);
     UpdateTexture();
 }
 
+
 // Contents.
-void TextEntity::SetContents(const std::string &contents)
+void TextEntity::SetContents(const std::string &format, ...)
 {
-    m_contents = contents;
+    va_list _list;
+    va_start(_list, format.c_str());
+        auto p_str = acow_string_format_va(format.c_str(), _list);
+        m_contents = p_str;
+
+        ACOW_SAFE_FREE(p_str);
+    va_end(_list);
+
     UpdateTexture();
 }
 
@@ -71,18 +79,18 @@ void TextEntity::UpdateTexture()
 {
     //--------------------------------------------------------------------------
     //We're fully transparent - So don't need spend cycles drawing it.
-    if(m_contents.empty() || !m_pFont)
+    if(m_contents.empty() || !m_pFontRef)
         return;
 
     m_pManagedTexture = m_pGraphicsRef->CreateFontTextureManaged(
-        m_pFont,
+        m_pFontRef,
         m_contents,
         m_color
     );
 
     UpdateRenderRect();
     UpdateColor     ();
-    SetSize(Vec2(m_renderRect.w, m_renderRect.h));
+    SetSize(m_renderRect.GetSize());
 }
 
 
@@ -96,7 +104,7 @@ void TextEntity::UpdateRenderRect()
     auto h = 0;
     SDL_QueryTexture(m_pManagedTexture.get(), nullptr, nullptr, &w, &h);
 
-    m_renderRect = Math::MakeRect(0, 0, w, h);
+    m_renderRect = acow::math::Rect(0, 0, w, h);
 }
 
 
@@ -122,14 +130,13 @@ void TextEntity::Render()
 {
     //--------------------------------------------------------------------------
     //Nothing to draw - So don't need spend cycles drawing it.
-    if(m_opacity <= 0.0f || m_contents.empty() || !m_pFont || !IsVisible())
+    if(m_opacity <= 0.0f || m_contents.empty() || !m_pFontRef || !IsVisible())
         return;
 
     //--------------------------------------------------------------------------
     // Update the destination rect.
     auto dst = GetBoundingRect();
-    dst.w    = m_renderRect.w;
-    dst.h    = m_renderRect.h;
+    dst.SetSize(m_renderRect.GetSize());
 
     //--------------------------------------------------------------------------
     // RenderTexture.
@@ -138,7 +145,7 @@ void TextEntity::Render()
         m_renderRect,
         dst,
         0,
-        SDL_Point{},
+        acow::math::Vec2::Half(),
         SDL_FLIP_NONE,
         m_opacity
     );

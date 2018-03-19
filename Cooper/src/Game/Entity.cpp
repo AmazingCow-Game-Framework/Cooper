@@ -24,34 +24,34 @@
 #include "include/Game/Game.h"
 #include "include/Graphics/Graphics.h"
 
-//Usings
+// Usings
 using namespace Cooper;
 
 
 //----------------------------------------------------------------------------//
 // CTOR / DTOR                                                                //
 //----------------------------------------------------------------------------//
-Entity::Entity(const Vec2 &pos /* = Vec2::Zero() */) :
+Entity::Entity(const acow::math::Vec2 &pos /* = acow::math::Vec2::Zero() */)
     // Members.
-    m_position(pos),
-    m_scale   (Vec2::One()),
-    m_rotation(0.0f),
-    m_origin  (Vec2::Half()),
-    m_size    (Vec2::Zero()),
-    m_enabled (true),
-    m_visible (true),
-    m_pParent (nullptr),
-    m_pGraphicsRef(Cooper::Graphics::Instance()),
-    m_pGameRef    (Cooper::Game    ::Instance())
+    : m_position    (pos)
+    , m_scale       (acow::math::Vec2::One())
+    , m_rotation    (0.0f)
+    , m_origin      (acow::math::Vec2::Half())
+    , m_size        (acow::math::Vec2::Zero())
+    , m_enabled     (   true)
+    , m_visible     (   true)
+    , m_pParentRef  (nullptr)
+    , m_pGraphicsRef(Cooper::Graphics::Instance())
+    , m_pGameRef    (Cooper::Game    ::Instance())
 {
-    //Empty...
+    // Empty...
 }
 
 Entity::~Entity()
 {
     //--------------------------------------------------------------------------
     // Set the weak references to null.
-    m_pParent      = nullptr;
+    m_pParentRef   = nullptr;
     m_pGraphicsRef = nullptr;
     m_pGameRef     = nullptr;
 }
@@ -61,7 +61,8 @@ Entity::~Entity()
 // Parent                                                                     //
 //----------------------------------------------------------------------------//
 // Setters.
-void Entity::SetParent(Entity *pParent)
+void
+Entity::SetParent(Entity *pParent)
 {
     //--------------------------------------------------------------------------
     // We're losing our parent - So let's make our transform to world.
@@ -89,12 +90,13 @@ void Entity::SetParent(Entity *pParent)
 
     //--------------------------------------------------------------------------
     // Set the new parent.
-    m_pParent = pParent;
+    m_pParentRef = pParent;
 }
 
 
 // Helpers
-void Entity::RemoveParent()
+void
+Entity::RemoveParent()
 {
     // Since we're getting detached from Parent we need convert our transform
     // to the world. This way we gonna stay at "same" place.
@@ -102,7 +104,7 @@ void Entity::RemoveParent()
     m_scale    = GetScale   (Space::World);
     m_rotation = GetRotation(Space::World);
 
-    m_pParent = nullptr;
+    m_pParentRef = nullptr;
 }
 
 
@@ -110,18 +112,19 @@ void Entity::RemoveParent()
 // Position                                                                   //
 //----------------------------------------------------------------------------//
 // Getters
-Vec2 Entity::GetPosition(Space space /* = Space::World */) const
+acow::math::Vec2
+Entity::GetPosition(Space space /* = Space::World */) const
 {
     // When Entity doesn't have a parent it's position is treated as world.
-    if(!m_pParent || space == Space::Local)
+    if(!m_pParentRef || space == Space::Local)
         return m_position;
 
     // Entity have a parent.
     //   So we need offset by its transform.
-    auto rotated_position = (m_position * m_pParent->GetScale(Space::World));
-    rotated_position.Rotate(m_pParent->GetRotation(Space::World));
+    auto rotated_position = (m_position * m_pParentRef->GetScale(Space::World));
+    rotated_position.Rotate(m_pParentRef->GetRotation(Space::World));
 
-    return rotated_position + m_pParent->GetPosition(Space::World);
+    return rotated_position + m_pParentRef->GetPosition(Space::World);
 }
 
 
@@ -129,13 +132,15 @@ Vec2 Entity::GetPosition(Space space /* = Space::World */) const
 // Rotation                                                                   //
 //----------------------------------------------------------------------------//
 // Getters.
-float Entity::GetRotation(Space space /* = Space::World */) const
+f32
+Entity::GetRotation(Space space /* = Space::World */) const
 {
-    //When Entity doesn't have a parent it's rotation is treated as world.
-    if(!m_pParent || space == Space::Local)
+    //--------------------------------------------------------------------------
+    // When Entity doesn't have a parent it's rotation is treated as world.
+    if(!m_pParentRef || space == Space::Local)
         return m_rotation;
 
-    return m_rotation + m_pParent->GetRotation(Space::World);
+    return m_rotation + m_pParentRef->GetRotation(Space::World);
 }
 
 
@@ -143,27 +148,30 @@ float Entity::GetRotation(Space space /* = Space::World */) const
 // Scale                                                                      //
 //----------------------------------------------------------------------------//
 // Getters.
-Vec2 Entity::GetScale(Space space /* = Space::World */) const
+acow::math::Vec2
+Entity::GetScale(Space space /* = Space::World */) const
 {
-    //When Entity doesn't have a parent it's scale is treated as world.
-    if(!m_pParent || space == Space::Local)
+    //--------------------------------------------------------------------------
+    // When Entity doesn't have a parent it's scale is treated as world.
+    if(!m_pParentRef || space == Space::Local)
         return m_scale;
 
-    return m_scale * m_pParent->GetScale(Space::World);
+    return m_scale * m_pParentRef->GetScale(Space::World);
 }
 
 
 //----------------------------------------------------------------------------//
 // Bounding Rect                                                              //
 //----------------------------------------------------------------------------//
-SDL_Rect Entity::GetBoundingRect() const
+acow::math::Rect
+Entity::GetBoundingRect() const
 {
     const auto &pos    = GetPosition();
     const auto &size   = GetSize    ();
     const auto &origin = GetOrigin  ();
     const auto &scale  = GetScale   ();
 
-    return Math::MakeRect(
+    return acow::math::Rect(
         (pos.x - size.x * scale.x * origin.x),
         (pos.y - size.y * scale.y * origin.y),
         (scale.x * size.x),

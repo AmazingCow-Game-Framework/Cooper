@@ -20,11 +20,9 @@
 
 #pragma once
 
-//std
+// std
 #include <string>
-//SDL
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include "acow/sdl_goodies.h"
 
 
 namespace Cooper {
@@ -40,16 +38,16 @@ namespace RES {
     void Init(const std::string &path = "./");
     void Shutdown();
 
-    bool IsInitialized();
+    bool IsInitialized() noexcept;
 
 
     //------------------------------------------------------------------------//
     // Path Functions                                                         //
     //------------------------------------------------------------------------//
     void SetBasePath(const std::string &path);
-    const std::string& GetBasePath();
+    const std::string& GetBasePath() noexcept;
 
-    std::string GetFullpath(const std::string &path);
+    std::string GetFullpath(const std::string &path) noexcept;
 
 
     //------------------------------------------------------------------------//
@@ -86,12 +84,12 @@ namespace RES {
     // Get - Will load the Font at first time.
     //       Afterwards it'll just return the reference, until the
     //       Font gets freed by FreeFont().
-    TTF_Font* GetFont(const std::string &path, int size);
+    TTF_Font* GetFont(const std::string &path, u32 size);
 
     // Free - Free the Font.
     //        If the Font isn't loaded (or already has been freed)
     //        this function will be an error.
-    void FreeFont(const std::string &path, int size);
+    void FreeFont(const std::string &path, u32 size);
 
 } // namespace RES
 } // namespace Cooper

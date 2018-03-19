@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SDL.h>
+// AmazingCow Libs
+#include "acow/sdl_goodies.h"
 
 #if (SDL_MINOR_VERSION == 0) && (SDL_PATCHLEVEL < 4)
 

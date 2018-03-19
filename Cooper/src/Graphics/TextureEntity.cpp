@@ -32,18 +32,18 @@ using namespace Cooper;
 //------------------------------------------------------------------------//
 TextureEntity::TextureEntity(
     const std::string &path,
-    const Vec2        &pos,  /* = Vec2::Zero()      */
-    const SDL_Rect    &rect  /* = SDL_Rect{0,0,0,0} */) :
+    const acow::math::Vec2 &pos,  /* = Vec2::Zero() */
+    const acow::math::Rect &rect  /* = Rect::Empty() */)
     // Base.
-    Entity   (pos),
+    : Entity   (pos)
     // Members.
-    m_pTexture  (       nullptr),
-    m_renderRect(Math::RectZero),
-    m_flip      ( SDL_FLIP_NONE),
-    m_opacity   (          1.0f)
+    , m_pTextureRef(       nullptr)
+    , m_renderRect (          rect)
+    , m_flip       ( SDL_FLIP_NONE)
+    , m_opacity    (          1.0f)
 {
     // Get the texture.
-    m_pTexture = RES::GetTexture(path);
+    m_pTextureRef = RES::GetTexture(path);
 
     // The function will calculate the actual rectangle.
     SetRenderRect(rect);
@@ -51,7 +51,7 @@ TextureEntity::TextureEntity(
 
 TextureEntity::~TextureEntity()
 {
-    m_pTexture = nullptr;
+    m_pTextureRef = nullptr;
 }
 
 
@@ -68,11 +68,11 @@ void TextureEntity::Render()
     //--------------------------------------------------------------------------
     // RenderTexture.
     m_pGraphicsRef->RenderTexture(
-        m_pTexture,
+        m_pTextureRef,
         m_renderRect,
         GetBoundingRect(),
         0,
-        SDL_Point{},
+        acow::math::Vec2::Zero(),
         SDL_RendererFlip(m_flip),
         m_opacity
 

@@ -23,14 +23,14 @@
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
 #include "acow/sdl_goodies.h"
+#include "acow/math_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
-#include "include/Timer/Timer.h"
 
 //COWTODO(n2omatt): We're not using the targetFPS hint today.
 
 namespace Cooper {
-//Forward declarations.
+// Forward declarations.
 class Graphics;
 
 class Game
@@ -46,7 +46,7 @@ public:
     // Lifecycle Functions                                                    //
     //------------------------------------------------------------------------//
 public:
-    static void Init(int targetFPS);
+    static void Init(u32 targetFPS);
     static void Shutdown();
 
     static bool IsInitialized();
@@ -61,9 +61,17 @@ private:
     // Getter Functions                                                       //
     //------------------------------------------------------------------------//
 public:
-    inline const Timer* const GetTimer() const { return &m_timer; }
+    inline const acow::sdl::Timer*
+    const GetTimer() const noexcept
+    {
+        return &m_timer;
+    }
 
-    inline bool IsRunning() const { return m_running; }
+    inline bool
+    IsRunning() const noexcept
+    {
+        return m_running;
+    }
 
 
     //------------------------------------------------------------------------//
@@ -72,7 +80,8 @@ public:
 public:
     void SetRootEntity(Entity::UPtr pEntity) noexcept;
 
-    inline Entity* GetRootEntity() const
+    inline Entity*
+    GetRootEntity() const
     {
         return m_pBaseEntity.get();
     }
@@ -100,16 +109,26 @@ public:
 public:
     bool  m_initialized;
     bool  m_running;
-    int   m_fpsFrames;
-    float m_fpsTime;
+    i32   m_fpsFrames;
+    f32   m_fpsTime;
 
-    Timer m_timer;
+    acow::sdl::Timer m_timer;
 
     Entity::UPtr m_pBaseEntity;
 
     //--------------------------------------------------------------------------
     // Weak References.
-    Graphics *m_pGraphics; // Cached for performance.
+    Graphics *m_pGraphicsRef; // Cached for performance.
 
 }; // class Game
+
+
+inline f32
+GlobalDeltaTime() noexcept
+{
+    return Game::Instance()->GetTimer()->GetDeltaTime();
+}
+
+
+
 }  // namespace Cooper

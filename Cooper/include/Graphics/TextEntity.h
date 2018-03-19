@@ -22,13 +22,13 @@
 
 // std
 #include <string>
+#include <cstdarg>
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
 #include "acow/sdl_goodies.h"
+#include "acow/math_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
-#include "include/Math/Math.h"
-#include "include/Graphics/Color.h"
 
 namespace Cooper {
 
@@ -47,10 +47,10 @@ public:
     //------------------------------------------------------------------------//
 public:
     TextEntity(
-        const std::string &path,
-        int               size,
-        const std::string &contents,
-        const Color       &color = Color::Black);
+        const std::string      &path,
+        int                     size,
+        const std::string      &contents,
+        const acow::sdl::Color &color = acow::sdl::Color::Black());
 
 
     //------------------------------------------------------------------------//
@@ -61,9 +61,13 @@ public:
     void SetFont(const std::string &path, int size);
 
     // Contents.
-    inline const std::string& GetContents() const { return m_contents; }
+    inline const std::string&
+    GetContents() const noexcept
+    {
+        return m_contents;
+    }
 
-    void SetContents(const std::string &contents);
+    void SetContents(const std::string &format, ...);
 
     // Helpers.
 private:
@@ -74,22 +78,33 @@ private:
     // Render Rect Functions                                                  //
     //------------------------------------------------------------------------//
 public:
-    inline void SetRenderRect(const SDL_Rect &rect)
+    inline void
+    SetRenderRect(const acow::math::Rect &rect) noexcept
     {
         m_renderRect          = rect;
         m_overridenRenderRect = true; // Now user decides what render.
     }
 
-    inline void ResetRenderRect()
+    inline void
+    ResetRenderRect()
     {
         m_overridenRenderRect = true; // Now it will render all text.
         UpdateRenderRect();
     }
 
     // Getters.
-    inline const SDL_Rect& GetRenderRect() const { return m_renderRect; }
+    inline const acow::math::Rect&
+    GetRenderRect() const noexcept
+    {
+        return m_renderRect;
+    }
 
-    inline bool IsRenderRectOverriden() const { return m_overridenRenderRect; }
+    inline bool
+    IsRenderRectOverriden() const noexcept
+    {
+        return m_overridenRenderRect;
+    }
+
 
     // Helpers.
 private:
@@ -100,18 +115,30 @@ private:
     // Opacity Functions                                                      //
     //------------------------------------------------------------------------//
 public:
-    inline float GetOpacity() const { return m_opacity; }
+    inline float GetOpacity() const noexcept
+    {
+        return m_opacity;
+    }
 
-    inline void SetOpacity(float opacity) { m_opacity = opacity; }
+    inline void
+    SetOpacity(float opacity) noexcept
+    {
+        m_opacity = opacity;
+    }
 
 
     //------------------------------------------------------------------------//
     // Color Functions                                                        //
     //------------------------------------------------------------------------//
 public:
-    inline const Color& GetColor() const { return m_color; }
+    inline const acow::sdl::Color&
+    GetColor() const noexcept
+    {
+        return m_color;
+    }
 
-    inline void SetColor(const Color &color)
+    inline void
+    SetColor(const acow::sdl::Color &color) noexcept
     {
         m_color = color;
         UpdateColor();
@@ -128,19 +155,20 @@ private:
 public:
     void Render() override;
 
+
     //------------------------------------------------------------------------//
     // iVars                                                                  //
     //------------------------------------------------------------------------//
 private:
-    TTF_Font                    *m_pFont; //Weak Reference.
-    std::shared_ptr<SDL_Texture> m_pManagedTexture;
+    TTF_Font                 *m_pFontRef;        //Weak Reference.
+    acow::sdl::Texture::SPtr  m_pManagedTexture;
 
-    SDL_Rect                     m_renderRect;
-    bool                         m_overridenRenderRect;
+    acow::math::Rect m_renderRect;
+    bool             m_overridenRenderRect;
 
-    std::string m_contents;
-    Color       m_color;
-    float       m_opacity;
+    std::string      m_contents;
+    acow::sdl::Color m_color;
+    float            m_opacity;
 
 }; // class TextEntity
 }  // namespace Cooper

@@ -26,8 +26,6 @@
 #include "acow/cpp_goodies.h"
 #include "CoreAssert/CoreAssert.h"
 #include "CoreLog/CoreLog.h"
-// Cooper
-#include "include/Memory/Memory.h"
 // Cooper Sound - Private.
 #include "src/Sound/private/AudioLib.h"
 #include "src/Sound/private/AudioValues.h"
@@ -102,7 +100,7 @@ void Sound::Shutdown()
 }
 
 
-bool Sound::IsInitialized()
+bool Sound::IsInitialized() noexcept
 {
     return m_initialized;
 }

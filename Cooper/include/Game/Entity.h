@@ -21,8 +21,8 @@
 #pragma once
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
-// Cooper
-#include "include/Math/Math.h"
+#include "acow/math_goodies.h"
+
 
 namespace Cooper {
 // Forward declarations.
@@ -44,7 +44,7 @@ public:
     // CTOR / DTOR                                                            //
     //------------------------------------------------------------------------//
 public:
-    explicit Entity(const Vec2 &pos = Vec2::Zero());
+    explicit Entity(const acow::math::Vec2 &pos = acow::math::Vec2::Zero());
     virtual ~Entity();
 
 
@@ -53,7 +53,7 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline const Entity* GetParent() const { return m_pParent; }
+    inline const Entity* GetParent() const noexcept { return m_pParentRef; }
     // Setters.
     void SetParent(Entity *pParent);
 
@@ -80,11 +80,20 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    Vec2 GetPosition(Space space = Space::World) const;
+    acow::math::Vec2 GetPosition(Space space = Space::World) const;
 
     // Setters.
-    inline void SetPosition(const Vec2 &pos)  { m_position = pos;     }
-    inline void SetPosition(float x, float y) { SetPosition(Vec2(x, y)); }
+    inline void
+    SetPosition(const acow::math::Vec2 &pos)
+    {
+        m_position = pos;
+    }
+
+    inline void
+    SetPosition(f32 x, f32 y)
+    {
+        SetPosition(acow::math::Vec2(x, y));
+    }
 
 
     //------------------------------------------------------------------------//
@@ -92,10 +101,14 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    float GetRotation(Space space = Space::World) const;
+    f32 GetRotation(Space space = Space::World) const;
 
     // Setters.
-    inline void SetRotation(float degrees) { m_rotation = degrees; }
+    inline void
+    SetRotation(f32 degrees)
+    {
+        m_rotation = degrees;
+    }
 
 
     //------------------------------------------------------------------------//
@@ -103,12 +116,26 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    Vec2 GetScale(Space space = Space::World) const;
+    acow::math::Vec2 GetScale(Space space = Space::World) const;
 
     // Setters.
-    inline void SetScale(const Vec2 &scale)  { m_scale = scale;           }
-    inline void SetScale(float x, float y )  { SetScale(Vec2(x,         y)); }
-    inline void SetScale(float value      )  { SetScale(Vec2(value, value)); }
+    inline void
+    SetScale(const acow::math::Vec2 &scale)
+    {
+        m_scale = scale;
+    }
+
+    inline void
+    SetScale(f32 x, f32 y)
+    {
+        SetScale(acow::math::Vec2(x, y));
+    }
+
+    inline void
+    SetScale(f32 value)
+    {
+        SetScale(acow::math::Vec2(value, value));
+    }
 
 
     //------------------------------------------------------------------------//
@@ -116,11 +143,20 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline Vec2 GetSize() const { return m_size; }
+    inline acow::math::Vec2 GetSize() const { return m_size; }
 
     // Setters.
-    inline void SetSize(const Vec2 &size) { m_size = size;    }
-    inline void SetSize(float x, float y) { SetSize(Vec2(x, y)); }
+    inline void
+    SetSize(const acow::math::Vec2 &size)
+    {
+        m_size = size;
+    }
+
+    inline void
+    SetSize(f32 x, f32 y)
+    {
+        SetSize(acow::math::Vec2(x, y));
+    }
 
 
     //------------------------------------------------------------------------//
@@ -131,27 +167,50 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline Vec2 GetOrigin() const { return m_origin; }
+    inline acow::math::Vec2 GetOrigin() const { return m_origin; }
 
     // Setters
-    inline void SetOrigin(const Vec2 &origin) { m_origin = origin; }
-    inline void SetOrigin(float x, float y)   { SetOrigin(Vec2(x, y)); }
+    inline void
+    SetOrigin(const acow::math::Vec2 &origin)
+    {
+        m_origin = origin;
+    }
+
+    inline void
+    SetOrigin(f32 x, f32 y)
+    {
+        SetOrigin(acow::math::Vec2(x, y));
+    }
 
 
     //------------------------------------------------------------------------//
     // Bounding Rect                                                          //
     //------------------------------------------------------------------------//
 public:
-    SDL_Rect GetBoundingRect() const;
+    acow::math::Rect GetBoundingRect() const;
 
 
     //------------------------------------------------------------------------//
     // Transformations                                                        //
     //------------------------------------------------------------------------//
 public:
-    inline void DoTranslate(const Vec2 &amount) { m_position += amount;  }
-    inline void DoScale    (const Vec2 &amount) { m_scale    += amount;  }
-    inline void DoRotate   (float      degrees) { m_rotation += degrees; }
+    inline void
+    DoTranslate(const acow::math::Vec2 &amount)
+    {
+        m_position += amount;
+    }
+
+    inline void
+    DoScale(const acow::math::Vec2 &amount)
+    {
+        m_scale += amount;
+    }
+
+    inline void
+    DoRotate(f32 degrees)
+    {
+        m_rotation += degrees;
+    }
 
 
     //------------------------------------------------------------------------//
@@ -167,20 +226,20 @@ public:
     //------------------------------------------------------------------------//
 private:
     // Transform.
-    Vec2  m_position;
-    Vec2  m_scale;
-    float m_rotation;
+    acow::math::Vec2  m_position;
+    acow::math::Vec2  m_scale;
+    f32               m_rotation;
 
     // Origin / Size.
-    Vec2 m_origin;
-    Vec2 m_size;
+    acow::math::Vec2 m_origin;
+    acow::math::Vec2 m_size;
 
     // Control
     bool m_enabled;
     bool m_visible;
 
     // Hierarchy
-    Entity *m_pParent; //Weak Reference...
+    Entity *m_pParentRef; // Weak Reference...
 
 
     //--------------------------------------------------------------------------

@@ -25,10 +25,10 @@
 // AmazingCow Libs
 #include "acow/sdl_goodies.h"
 #include "CoreAssert/CoreAssert.h"
+#include "CoreFS/CoreFS.h"
 // Cooper
 #include "include/Graphics/Graphics.h"
 #include "include/Graphics/TextureAtlas.h"
-#include "include/Memory/Memory.h"
 
 // Usings
 using namespace Cooper;
@@ -51,33 +51,35 @@ using namespace Cooper;
 //----------------------------------------------------------------------------//
 // Variables                                                                  //
 //----------------------------------------------------------------------------//
-namespace {
-    // Control.
-    bool m_initialized = false;
+// Control.
+acow_global_variable bool m_initialized = false;
 
-    // BasePath.
-    std::string m_basePath;
+// BasePath.
+acow_global_variable std::string m_basePath;
 
-    // Maps.
-    std::map<std::string, std::shared_ptr<TextureAtlas>> m_atlasMap;
-    std::map<std::string, std::shared_ptr<SDL_Texture >> m_texturesMap;
-    std::map<std::string, std::shared_ptr<TTF_Font    >> m_fontMap;
+// Maps.
+acow_global_variable std::map<std::string, std::shared_ptr<TextureAtlas>> m_atlasMap;
+acow_global_variable std::map<std::string, std::shared_ptr<SDL_Texture >> m_texturesMap;
+acow_global_variable std::map<std::string, std::shared_ptr<TTF_Font    >> m_fontMap;
 
-    // Weak References.
-    Graphics *m_pGraphics = nullptr; //Cached for performance.
-}
+// Weak References.
+acow_global_variable Graphics *m_pGraphicsRef = nullptr; //Cached for performance.
 
 
 //------------------------------------------------------------------------------
 //  This functions will make an variadic argument list and make it turn
 //  into one string. This way we can make keys for resource maps easly.
 template<typename T>
-std::string make_key(const T &v) {
+acow_internal_function inline std::string
+make_key(const T &v) noexcept
+{
     return std::to_string(v);
 }
 
 template<typename T, typename... Args>
-std::string make_key(const T &first, Args... args) {
+acow_internal_function std::string
+make_key(const T &first, Args... args) noexcept
+{
     return first + make_key(args...);
 }
 
@@ -85,19 +87,21 @@ std::string make_key(const T &first, Args... args) {
 // Function Declarations                                                      //
 //   Helper functions that doesn't need to be defined "in-place".             //
 //----------------------------------------------------------------------------//
-void free_font(const std::string &key);
+acow_internal_function void
+free_font(const std::string &key) noexcept;
 
 
 //----------------------------------------------------------------------------//
 // Lifecycle Functions                                                        //
 //----------------------------------------------------------------------------//
-void RES::Init(const std::string &path)
+void
+RES::Init(const std::string &path)
 {
     COREASSERT_ASSERT(!m_initialized, "RES is already initialized.");
 
-    m_initialized = true;
-    m_pGraphics   = Graphics::Instance(); //Cached for performance.
-    m_basePath    = path;
+    m_initialized  = true;
+    m_pGraphicsRef = Graphics::Instance(); //Cached for performance.
+    m_basePath     = path;
 
     // COWTODO(n2omatt): Check if it exists....
 }
@@ -123,11 +127,12 @@ void RES::Shutdown()
 
     //COWTODO(n2omatt): Implement for audio.
 
-    m_initialized = false;
-    m_pGraphics   = nullptr;
+    m_initialized  = false;
+    m_pGraphicsRef = nullptr;
 }
 
-bool RES::IsInitialized()
+bool
+RES::IsInitialized() noexcept
 {
     return m_initialized;
 }
@@ -136,27 +141,31 @@ bool RES::IsInitialized()
 //------------------------------------------------------------------------//
 // Path Functions                                                         //
 //------------------------------------------------------------------------//
-void RES::SetBasePath(const std::string &path)
+void
+RES::SetBasePath(const std::string &path)
 {
+    // COWTODO(n2omatt): Check if valid.
     m_basePath = path;
 }
 
-const std::string& RES::GetBasePath()
+const std::string&
+RES::GetBasePath() noexcept
 {
     return m_basePath;
 }
 
-std::string RES::GetFullpath(const std::string &path)
+std::string
+RES::GetFullpath(const std::string &path) noexcept
 {
-    //COWTODO(n2omatt): Improve...
-    return m_basePath + path;
+    return CoreFS::Join(m_basePath, {path});
 }
 
 
 //----------------------------------------------------------------------------//
 // Atlas Functions                                                            //
 //----------------------------------------------------------------------------//
-TextureAtlas* RES::GetAtlas(const std::string &path)
+TextureAtlas*
+RES::GetAtlas(const std::string &path)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
@@ -173,7 +182,8 @@ TextureAtlas* RES::GetAtlas(const std::string &path)
 }
 
 
-void RES::FreeAtlas(const std::string &path)
+void
+RES::FreeAtlas(const std::string &path)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
@@ -197,7 +207,8 @@ void RES::FreeAtlas(const std::string &path)
 // Texture Functions                                                          //
 //----------------------------------------------------------------------------//
 // Get
-SDL_Texture* RES::GetTexture(const std::string &path)
+SDL_Texture*
+RES::GetTexture(const std::string &path)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
@@ -211,7 +222,7 @@ SDL_Texture* RES::GetTexture(const std::string &path)
     // If not, load it now...
     m_texturesMap[path] = std::shared_ptr<SDL_Texture>(
         // Let the Graphics load the Texture for us.
-        m_pGraphics->LoadTexture(path),
+        m_pGraphicsRef->LoadTexture(path),
         // Our custom deleter.
         [=](SDL_Texture *pTexture) {
             SDL_DestroyTexture(pTexture);
@@ -222,7 +233,8 @@ SDL_Texture* RES::GetTexture(const std::string &path)
 }
 
 // Free
-void RES::FreeTexture(const std::string &path)
+void
+RES::FreeTexture(const std::string &path)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
@@ -247,7 +259,8 @@ void RES::FreeTexture(const std::string &path)
 // Font Functions                                                             //
 //----------------------------------------------------------------------------//
 // Get
-TTF_Font* RES::GetFont(const std::string &path, int size)
+TTF_Font*
+RES::GetFont(const std::string &path, u32 size)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
@@ -282,7 +295,8 @@ TTF_Font* RES::GetFont(const std::string &path, int size)
 }
 
 // Free
-void RES::FreeFont(const std::string &path, int size)
+void
+RES::FreeFont(const std::string &path, u32 size)
 {
     COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
     free_font(make_key(path, size)); //Just forward the call.
@@ -293,7 +307,8 @@ void RES::FreeFont(const std::string &path, int size)
 // i.e. users will never need to know how we store the resources internally.
 // So to the user's point of view the Font is just a 'path' and a 'size'
 // but internally is made into a key.
-void free_font(const std::string &key)
+void
+free_font(const std::string &key) noexcept
 {
     //--------------------------------------------------------------------------
     // Font must exists.
