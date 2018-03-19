@@ -29,6 +29,7 @@
 #include "CoreAssert/CoreAssert.h"
 // Cooper
 #include "include/Math/Math.h"
+#include "include/Graphics/Color.h"
 
 
 namespace Cooper {
@@ -146,7 +147,7 @@ public:
     // Rendering Functions                                                    //
     //------------------------------------------------------------------------//
 public:
-    inline void SetClearColor(const SDL_Color &c)
+    inline void SetClearColor(const Color &c)
     {
         COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
@@ -181,19 +182,19 @@ public:
 
     //--------------------------------------------------------------------------
     // Rectangle.
-    void RenderRect(const SDL_Rect &rect, const SDL_Color &c = Math::ColorWhite);
+    void RenderRect(const SDL_Rect &rect, const Color &c = Color::White);
 
     //--------------------------------------------------------------------------
     // Circle.
     void RenderCircle(
-        const Vec2      &center,
-        float            radius,
-        const SDL_Color &color = Math::ColorWhite,
-        int              sides = -1);
+        const Vec2  &center,
+        float        radius,
+        const Color &color = Color::White,
+        int          sides = -1);
 
     //--------------------------------------------------------------------------
     // Line.
-    void RenderLine(const Vec2 &start, const Vec2 &end, const SDL_Color& c);
+    void RenderLine(const Vec2 &start, const Vec2 &end, const Color& c);
 
 
     //------------------------------------------------------------------------//
@@ -201,8 +202,8 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Control.
-    bool      m_initialized;
-    SDL_Color m_clearColor;
+    bool   m_initialized;
+    Color  m_clearColor;
 
     // Window.
     int         m_width;

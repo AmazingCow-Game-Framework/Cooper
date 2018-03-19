@@ -28,7 +28,7 @@
 // Cooper
 #include "include/Game/Entity.h"
 #include "include/Math/Math.h"
-
+#include "include/Graphics/Color.h"
 
 namespace Cooper {
 
@@ -50,7 +50,7 @@ public:
         const std::string &path,
         int               size,
         const std::string &contents,
-        const SDL_Color   &color = Math::ColorBlack);
+        const Color       &color = Color::Black);
 
 
     //------------------------------------------------------------------------//
@@ -112,11 +112,9 @@ public:
     // Color Functions                                                        //
     //------------------------------------------------------------------------//
 public:
-    // Getters.
-    inline const SDL_Color& Color() const { return m_color; }
+    inline const Color& GetColor() const { return m_color; }
 
-    // Setters.
-    inline void Color(const SDL_Color &color)
+    inline void SetColor(const Color &color)
     {
         m_color = color;
         UpdateColor();
@@ -144,7 +142,7 @@ private:
     bool                         m_overridenRenderRect;
 
     std::string m_contents;
-    SDL_Color   m_color;
+    Color       m_color;
     float       m_opacity;
 
 }; // class TextEntity

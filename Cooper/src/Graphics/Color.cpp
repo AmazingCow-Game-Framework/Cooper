@@ -7,59 +7,39 @@
 //                    |   _   ||     |_ |       ||   _   |                    //
 //                    |__| |__||_______||_______||__| |__|                    //
 //                             www.amazingcow.com                             //
-//  File      : Color.h                                                       //
+//  File      : Color.cpp                                                     //
 //  Project   : Cooper                                                        //
-//  Date      : Nov 17, 2017                                                  //
+//  Date      : Feb 22, 2018                                                  //
 //  License   : GPLv3                                                         //
 //  Author    : n2omatt <n2omatt@amazingcow.com>                              //
-//  Copyright : AmazingCow - 2017                                             //
+//  Copyright : AmazingCow - 2018                                             //
 //                                                                            //
 //  Description :                                                             //
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-#pragma once
+// Header
+#include "include/Graphics/Color.h"
 
-// std
-#include <cmath>
-// SDL
-#include <SDL.h>
-
-namespace Cooper { namespace Math {
+// Usings
+using namespace Cooper;
 
 //----------------------------------------------------------------------------//
-// Constants                                                                  //
+// Enums / Contants / Typedefs                                                //
 //----------------------------------------------------------------------------//
 //------------------------------------------------------------------------------
-// B/W Colors.
-constexpr SDL_Color ColorWhite = SDL_Color{255, 255, 255, 255};
-constexpr SDL_Color ColorBlack = SDL_Color{  0,   0,   0, 255};
+// BW.
+const Color Color::White(255, 255, 255);
+const Color Color::Black(  0,   0,   0);
 
 //------------------------------------------------------------------------------
 // Primary Colors.
-constexpr SDL_Color ColorRed   = SDL_Color{ 255,   0,   0, 255};
-constexpr SDL_Color ColorGreen = SDL_Color{   0, 255,   0, 255};
-constexpr SDL_Color ColorBlue  = SDL_Color{   0,   0, 255, 255};
+const Color Color::Red  (255,   0,   0);
+const Color Color::Green(0,   255,   0);
+const Color Color::Blue (0,     0, 255);
 
 //------------------------------------------------------------------------------
 // Secondary Colors.
-constexpr SDL_Color ColorCyan    = SDL_Color{  0, 255, 255, 255};
-constexpr SDL_Color ColorMagenta = SDL_Color{255,   0, 255, 255};
-constexpr SDL_Color ColorYellow  = SDL_Color{255, 255,   0, 255};
-
-
-//----------------------------------------------------------------------------//
-// Helper Functions                                                           //
-//----------------------------------------------------------------------------//
-constexpr inline SDL_Color MakeColor(int r, int g, int b, int a = 255) noexcept
-{
-    return SDL_Color {
-        Uint8(r),
-        Uint8(g),
-        Uint8(b),
-        Uint8(a)
-    };
-}
-
-} // namespace Math
-} // namespace Cooper
+const Color Color::Cyan   (0,   255, 255);
+const Color Color::Magenta(255,   0, 255);
+const Color Color::Yellow (255, 255,   0);

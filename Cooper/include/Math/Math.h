@@ -24,7 +24,6 @@
 // Export headers                                                             //
 //----------------------------------------------------------------------------//
 #include "Constants.h"
-#include "Color.h"
 #include "Operations.h"
 #include "Point.h"
 #include "Rect.h"
