@@ -1,3 +1,12 @@
 [submodule "lib/CoreRandom"]
 	path = lib/CoreRandom
 	url = https://github.com/AmazingCow-Libs/CoreRandom
+[submodule "lib/acow_cpp_goodies"]
+	path = lib/acow_cpp_goodies
+	url = https://github.com/AmazingCow-Libs/acow_cpp_goodies
+[submodule "lib/CoreAssert"]
+	path = lib/CoreAssert
+	url = https://github.com/AmazingCow-Libs/CoreAssert
+[submodule "lib/CoreString"]
+	path = lib/CoreString
+	url = https://github.com/AmazingCow-Libs/CoreString
