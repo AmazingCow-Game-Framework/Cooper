@@ -22,6 +22,7 @@
 
 // std
 #include <string>
+#include <cstdarg>
 // AmazingCow Libs
 #include "acow/cpp_goodies.h"
 #include "acow/sdl_goodies.h"
@@ -66,7 +67,7 @@ public:
         return m_contents;
     }
 
-    void SetContents(const std::string &contents);
+    void SetContents(const std::string &format, ...);
 
     // Helpers.
 private:

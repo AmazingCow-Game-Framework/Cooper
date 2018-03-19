@@ -59,10 +59,18 @@ void TextEntity::SetFont(const std::string &path, int size)
     UpdateTexture();
 }
 
+
 // Contents.
-void TextEntity::SetContents(const std::string &contents)
+void TextEntity::SetContents(const std::string &format, ...)
 {
-    m_contents = contents;
+    va_list _list;
+    va_start(_list, format.c_str());
+        auto p_str = acow_string_format_va(format.c_str(), _list);
+        m_contents = p_str;
+
+        ACOW_SAFE_FREE(p_str);
+    va_end(_list);
+
     UpdateTexture();
 }
 
