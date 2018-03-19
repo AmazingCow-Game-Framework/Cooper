@@ -22,10 +22,7 @@
 
 // std
 #include <string>
-// SDL
-#include <SDL.h>
 // Cooper
-#include "include/Macros/Macros.h"
 #include "include/Math/Math.h"
 
 namespace Cooper {
@@ -89,5 +86,5 @@ namespace Input
     // True only on the frame that button is up.
     bool MouseButtonRelease(int button);
 
-} //namespace Input
-} //namespace Cooper
+} // namespace Input
+} // namespace Cooper

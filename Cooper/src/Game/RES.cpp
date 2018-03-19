@@ -22,13 +22,12 @@
 #include "include/Game/RES.h"
 // std
 #include <map>
-// SDL
-#include "SDL_image.h"
-#include "SDL_ttf.h"
+// AmazingCow Libs
+#include "acow/sdl_goodies.h"
+#include "CoreAssert/CoreAssert.h"
 // Cooper
 #include "include/Graphics/Graphics.h"
 #include "include/Graphics/TextureAtlas.h"
-#include "include/Macros/Macros.h"
 #include "include/Memory/Memory.h"
 
 // Usings
@@ -94,16 +93,18 @@ void free_font(const std::string &key);
 //----------------------------------------------------------------------------//
 void RES::Init(const std::string &path)
 {
-    COOPER_ASSERT(!m_initialized, "RES is already initialized.");
+    COREASSERT_ASSERT(!m_initialized, "RES is already initialized.");
 
     m_initialized = true;
     m_pGraphics   = Graphics::Instance(); //Cached for performance.
     m_basePath    = path;
+
+    // COWTODO(n2omatt): Check if it exists....
 }
 
 void RES::Shutdown()
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Release all Atlases.
@@ -157,7 +158,7 @@ std::string RES::Fullpath(const std::string &path)
 //----------------------------------------------------------------------------//
 TextureAtlas* RES::GetAtlas(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Assume that Texture is already loaded...
@@ -174,13 +175,13 @@ TextureAtlas* RES::GetAtlas(const std::string &path)
 
 void RES::FreeAtlas(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Atlas must exists.
     //   If not User is trying to free something that he doesn't loaded!
     auto it = m_atlasMap.find(path);
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         it != std::end(m_atlasMap),
         "Freeing a not loaded Atlas(key): %s",
         path.c_str()
@@ -198,7 +199,7 @@ void RES::FreeAtlas(const std::string &path)
 // Get
 SDL_Texture* RES::GetTexture(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Assume that Texture is already loaded...
@@ -223,13 +224,13 @@ SDL_Texture* RES::GetTexture(const std::string &path)
 // Free
 void RES::FreeTexture(const std::string &path)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Texture must exists.
     //   If not User is trying to free something that he doesn't loaded!
     auto it = m_texturesMap.find(path);
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         it != std::end(m_texturesMap),
         "Freeing a not loaded Texture: %s",
         path.c_str()
@@ -248,7 +249,7 @@ void RES::FreeTexture(const std::string &path)
 // Get
 TTF_Font* RES::GetFont(const std::string &path, int size)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
 
     //--------------------------------------------------------------------------
     // Assume that Texture is already loaded...
@@ -261,7 +262,7 @@ TTF_Font* RES::GetFont(const std::string &path, int size)
     // It's not - so lets load it ;D
     auto p_load_font = TTF_OpenFont(path.c_str(), size);
 
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         p_load_font, //p_font must be a valid pointer.
         "Failed to open Font %s - Size: %d\nTTF_Error:%s",
         path.c_str(),
@@ -283,7 +284,7 @@ TTF_Font* RES::GetFont(const std::string &path, int size)
 // Free
 void RES::FreeFont(const std::string &path, int size)
 {
-    COOPER_ASSERT(m_initialized, "RES isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "RES isn't initialized.");
     free_font(make_key(path, size)); //Just forward the call.
 }
 
@@ -298,7 +299,7 @@ void free_font(const std::string &key)
     // Font must exists.
     //   If not User is trying to free something that he doesn't loaded!
     auto it = m_fontMap.find(key);
-    COOPER_ASSERT(
+    COREASSERT_ASSERT(
         it != std::end(m_fontMap),
         "Freeing a not loaded Font(key): %s",
         key.c_str()

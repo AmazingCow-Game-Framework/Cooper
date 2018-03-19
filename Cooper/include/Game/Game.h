@@ -19,11 +19,12 @@
 //---------------------------------------------------------------------------~//
 
 #pragma once
-// SDL
-#include <SDL.h>
+
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
+#include "acow/sdl_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
-#include "include/Macros/Macros.h"
 #include "include/Timer/Timer.h"
 
 //COWTODO(n2omatt): We're not using the targetFPS hint today.
@@ -38,7 +39,7 @@ class Game
     // Singleton                                                              //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SINGLETON_OF(Game);
+    ACOW_SINGLETON_OF(Game);
 
 
     //------------------------------------------------------------------------//
@@ -68,10 +69,8 @@ public:
     //------------------------------------------------------------------------//
     // Root Entity                                                            //
     //------------------------------------------------------------------------//
-    inline void SetRootEntity(Entity::UPtr pEntity)
-    {
-        m_pBaseEntity = std::move(pEntity);
-    }
+public:
+    void SetRootEntity(Entity::UPtr pEntity) noexcept;
 
     inline Entity* GetRootEntity() const
     {

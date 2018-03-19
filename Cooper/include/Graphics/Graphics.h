@@ -21,19 +21,15 @@
 #pragma once
 
 // std
-#include <memory> //shared_ptr
+#include <cstdint>
 #include <string>
-// SDL
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 // Amazing Cow Libs
+#include "acow/cpp_goodies.h"
 #include "acow/sdl_goodies.h"
+#include "CoreAssert/CoreAssert.h"
 // Cooper
-#include "include/Macros/Macros.h"
 #include "include/Math/Math.h"
 
-#include <cstdint>
 
 namespace Cooper {
 
@@ -43,7 +39,7 @@ class Graphics
     // Singleton                                                              //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SINGLETON_OF(Graphics);
+    ACOW_SINGLETON_OF(Graphics);
 
 
     //------------------------------------------------------------------------//
@@ -107,7 +103,7 @@ public:
         Uint32 format = SDL_PIXELFORMAT_ARGB8888,
         int    access = SDL_TEXTUREACCESS_STATIC)
     {
-        COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+        COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
         auto p_texture = SDL_CreateTexture(
             m_pRenderer.get(),
@@ -117,7 +113,7 @@ public:
             height
         );
 
-        COOPER_VERIFY(
+        COREASSERT_VERIFY(
             p_texture, //Texture must be not null...
             "Failed to create texture!\nSDL_Error: %s",
             SDL_GetError()
@@ -152,7 +148,7 @@ public:
 public:
     inline void SetClearColor(const SDL_Color &c)
     {
-        COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+        COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
 
         m_clearColor = c;
         SDL_SetRenderDrawColor(m_pRenderer.get(), c.r, c.g, c.b, 0xFF);
@@ -160,13 +156,13 @@ public:
 
     inline void Clear()
     {
-        COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+        COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
         SDL_RenderClear(m_pRenderer.get());
     }
 
     inline void Present()
     {
-        COOPER_ASSERT(m_initialized, "Graphics isn't initialized.");
+        COREASSERT_ASSERT(m_initialized, "Graphics isn't initialized.");
         SDL_RenderPresent(m_pRenderer.get());
     }
 
@@ -217,5 +213,5 @@ public:
     acow::sdl::Window::UPtr   m_pWindow;
     acow::sdl::Renderer::UPtr m_pRenderer;
 
-}; //class Graphics
-} //namespace Cooper
+}; // class Graphics
+}  // namespace Cooper

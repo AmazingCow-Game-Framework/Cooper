@@ -22,12 +22,11 @@
 
 // std
 #include <string>
-// SDL
-#include <SDL.h>
+// AmazingCow Libs
+#include "acow/cpp_goodies.h"
 // Cooper
 #include "include/Game/Entity.h"
 #include "include/Math/Math.h"
-#include "include/Macros/Macros.h"
 
 
 namespace Cooper {
@@ -41,7 +40,7 @@ class TextureEntity
     // Enums / Constants / Typedefs                                           //
     //------------------------------------------------------------------------//
 public:
-    COOPER_SMART_PTRS_OF(TextureEntity);
+    ACOW_SMART_PTRS_OF(TextureEntity);
 
 
     //------------------------------------------------------------------------//
@@ -136,7 +135,7 @@ public:
     // iVars                                                                  //
     //------------------------------------------------------------------------//
 private:
-    SDL_Texture *m_pTexture;   // Weak pointer - Owned by RES.
+    SDL_Texture *m_pTexture;  // Weak pointer - Owned by RES.
     SDL_Rect    m_renderRect; // Which part of the texture that will be drawn.
     int         m_flip;
 

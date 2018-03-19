@@ -22,6 +22,8 @@
 #include "include/Input/Input.h"
 // std
 #include <cstring> // memset(3), memcpy(3), memcmp(3)
+// AmazingCow Libs
+#include "CoreAssert/CoreAssert.h"
 
 // Usings
 using namespace Cooper;
@@ -54,7 +56,7 @@ namespace {
 //----------------------------------------------------------------------------//
 void Input::Init()
 {
-    COOPER_ASSERT(!m_initialized, "Input is already initialized.");
+    COREASSERT_ASSERT(!m_initialized, "Input is already initialized.");
 
     //--------------------------------------------------------------------------
     // Query SDL about the current keyboard state.
@@ -85,7 +87,7 @@ void Input::Init()
 
 void Input::Shutdown()
 {
-    COOPER_ASSERT(m_initialized, "Input isn't  initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't  initialized.");
 
     //--------------------------------------------------------------------------
     // Delete memory allocated by us.
@@ -151,28 +153,28 @@ void Input::PostUpdate()
 //----------------------------------------------------------------------------//
 bool Input::HasKeyboardInput()
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_hasKeyboardInput;
 }
 
 bool Input::KeyDown(SDL_Scancode key)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_pCurrKeyboardState[key];
 }
 
 bool Input::KeyPress(SDL_Scancode key)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return !m_pPrevKeyboardState[key] && m_pCurrKeyboardState[key];
 }
 
 bool Input::KeyRelease(SDL_Scancode key)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_pPrevKeyboardState[key] && !m_pCurrKeyboardState[key];
 }
@@ -183,14 +185,14 @@ bool Input::KeyRelease(SDL_Scancode key)
 //----------------------------------------------------------------------------//
 bool Input::HasMouseInput()
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_hasMouseInput;
 }
 
 const Vec2& Input::MousePosition()
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     static auto s_mouse_pos = Vec2(m_currMousePosition);
 
@@ -202,14 +204,14 @@ const Vec2& Input::MousePosition()
 
 bool Input::MouseButtonDown(int button)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     return m_currMouseState && SDL_BUTTON(button);
 }
 
 bool Input::MouseButtonPress(int button)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     //--------------------------------------------------------------------------
     // We set 0 as the left button, but SDL wants that be 1.
@@ -221,7 +223,7 @@ bool Input::MouseButtonPress(int button)
 
 bool Input::MouseButtonRelease(int button)
 {
-    COOPER_ASSERT(m_initialized, "Input isn't initialized.");
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
     //--------------------------------------------------------------------------
     // We set 0 as the left button, but SDL wants that be 1.

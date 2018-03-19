@@ -20,8 +20,9 @@
 
 #pragma once
 
-// SDL
-#include <SDL.h>
+// std
+#include <cstdint>
+
 
 namespace Cooper {
 
@@ -73,8 +74,8 @@ public:
     // iVars                                                                  //
     //------------------------------------------------------------------------//
 private:
-    Uint64 m_startTime;
-    Uint64 m_frequency;
+    uint64_t m_startTime;
+    uint64_t m_frequency;
 
     float m_deltaTime;
     float m_totalTime;
