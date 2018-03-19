@@ -121,4 +121,14 @@ public:
     Graphics *m_pGraphicsRef; // Cached for performance.
 
 }; // class Game
+
+
+inline f32
+GlobalDeltaTime() noexcept
+{
+    return Game::Instance()->GetTimer()->GetDeltaTime();
+}
+
+
+
 }  // namespace Cooper
