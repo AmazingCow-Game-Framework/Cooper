@@ -22,3 +22,6 @@
 [submodule "lib/acow_nt_posix"]
 	path = lib/acow_nt_posix
 	url = https://github.com/AmazingCow-Libs/acow_nt_posix
+[submodule "lib/CoreFS"]
+	path = lib/CoreFS
+	url = https://github.com/AmazingCow-Libs/CoreFS
