@@ -10,3 +10,6 @@
 [submodule "lib/CoreString"]
 	path = lib/CoreString
 	url = https://github.com/AmazingCow-Libs/CoreString
+[submodule "lib/acow_sdl_goodies"]
+	path = lib/acow_sdl_goodies
+	url = https://github.com/AmazingCow-Libs/acow_sdl_goodies
