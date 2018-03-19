@@ -82,7 +82,7 @@ void Game::Shutdown()
     Instance()->m_pGraphics   = nullptr;
 }
 
-bool Game::Initialized()
+bool Game::IsInitialized()
 {
     return Instance()->m_initialized;
 }
@@ -92,7 +92,7 @@ void Game::InnerRun()
 {
     Game::Instance()->m_timer.Update();
 
-    Game::Instance()->m_fpsTime += Game::Instance()->m_timer.DeltaTime();
+    Game::Instance()->m_fpsTime += Game::Instance()->m_timer.GetDeltaTime();
     Game::Instance()->m_fpsFrames++;
 
     //--------------------------------------------------------------------------
@@ -108,6 +108,39 @@ void Game::InnerRun()
             if(s_event.window.event == SDL_WINDOWEVENT_RESIZED)
             {
                 CoreLog::D("Resize: %d, %d", s_event.window.data1, s_event.window.data2);
+                auto rect = SDL_Rect{
+                        0,
+                        0,
+                        s_event.window.data1,
+                        s_event.window.data2
+                };
+//                SDL_RenderSetViewport(
+//                        Instance()->m_pGraphics->m_pRenderer.get(),
+//                        &rect
+//                );
+//
+//                SDL_RenderSetScale(
+//                        Instance()->m_pGraphics->m_pRenderer.get(),
+//                        float(s_event.window.data1) / Instance()->m_pGraphics->m_width,
+//                        float(s_event.window.data2) / Instance()->m_pGraphics->m_height
+//                );
+//                SDL_RenderSetIntegerScale(
+//                        Instance()->m_pGraphics->m_pRenderer.get(),
+//                        SDL_TRUE
+//                );
+                SDL_RenderSetLogicalSize(
+                        Instance()->m_pGraphics->m_pRenderer.get(),
+                        Instance()->m_pGraphics->m_width,
+                        Instance()->m_pGraphics->m_height
+                );
+
+                SDL_SetHintWithPriority(
+                    SDL_HINT_RENDER_LOGICAL_SIZE_MODE,
+                    "overscan",
+                    SDL_HINT_OVERRIDE
+                );
+
+
             }
         }
     }
@@ -168,7 +201,7 @@ void Game::SetRootEntity(Entity::UPtr pEntity) noexcept
 {
     COREASSERT_ASSERT(pEntity != nullptr, "pEntity can't be null");
 
-    pEntity->Size(m_pGraphics->GetScreenSize());
+    pEntity->SetSize(m_pGraphics->GetScreenSize());
     m_pBaseEntity = std::move(pEntity);
 }
 

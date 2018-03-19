@@ -77,7 +77,7 @@ public:
     static void Init(int width, int height, const std::string &caption);
     static void Shutdown();
 
-    static bool Initialized();
+    static bool IsInitialized();
 
 
     //------------------------------------------------------------------------//

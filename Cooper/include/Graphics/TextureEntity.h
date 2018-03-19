@@ -69,10 +69,10 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline SDL_Rect RenderRect() const { return m_renderRect; }
+    inline SDL_Rect GetRenderRect() const { return m_renderRect; }
 
     // Setters.
-    inline void RenderRect(const SDL_Rect &rect)
+    inline void SetRenderRect(const SDL_Rect &rect)
     {
         m_renderRect = rect;
         if(m_renderRect.w == 0 || m_renderRect.h == 0)
@@ -86,7 +86,7 @@ public:
             );
         }
 
-        Size(m_renderRect.w, m_renderRect.h);
+        SetSize(m_renderRect.w, m_renderRect.h);
     }
 
 
@@ -95,10 +95,10 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline float Opacity() const { return m_opacity; }
+    inline float GetOpacity() const { return m_opacity; }
 
     // Setters.
-    inline void Opacity(float opacity) { m_opacity = opacity; }
+    inline void SetOpacity(float opacity) { m_opacity = opacity; }
 
 
     //------------------------------------------------------------------------//

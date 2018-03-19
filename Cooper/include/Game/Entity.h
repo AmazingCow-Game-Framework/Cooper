@@ -53,9 +53,9 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline const Entity* Parent() const { return m_pParent; }
+    inline const Entity* GetParent() const { return m_pParent; }
     // Setters.
-    void Parent(Entity *pParent);
+    void SetParent(Entity *pParent);
 
     // Helpers.
 private:
@@ -67,12 +67,12 @@ private:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline bool Enabled() const { return m_enabled; }
-    inline bool Visible() const { return m_visible; }
+    inline bool IsEnabled() const { return m_enabled; }
+    inline bool IsVisible() const { return m_visible; }
 
     // Setters.
-    inline void Enabled(bool enable ) { m_enabled = enable;  }
-    inline void Visible(bool visible) { m_visible = visible; }
+    inline void SetEnabled(bool enable ) { m_enabled = enable;  }
+    inline void SetVisible(bool visible) { m_visible = visible; }
 
 
     //------------------------------------------------------------------------//
@@ -80,11 +80,11 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    Vec2 Position(Space space = Space::World) const;
+    Vec2 GetPosition(Space space = Space::World) const;
 
     // Setters.
-    inline void Position(const Vec2 &pos)  { m_position = pos;     }
-    inline void Position(float x, float y) { Position(Vec2(x, y)); }
+    inline void SetPosition(const Vec2 &pos)  { m_position = pos;     }
+    inline void SetPosition(float x, float y) { SetPosition(Vec2(x, y)); }
 
 
     //------------------------------------------------------------------------//
@@ -92,10 +92,10 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    float Rotation(Space space = Space::World) const;
+    float GetRotation(Space space = Space::World) const;
 
     // Setters.
-    inline void Rotation(float degrees) { m_rotation = degrees; }
+    inline void SetRotation(float degrees) { m_rotation = degrees; }
 
 
     //------------------------------------------------------------------------//
@@ -103,12 +103,12 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    Vec2 Scale(Space space = Space::World) const;
+    Vec2 GetScale(Space space = Space::World) const;
 
     // Setters.
-    inline void Scale(const Vec2 &scale)  { m_scale = scale;           }
-    inline void Scale(float x, float y )  { Scale(Vec2(x,         y)); }
-    inline void Scale(float value      )  { Scale(Vec2(value, value)); }
+    inline void SetScale(const Vec2 &scale)  { m_scale = scale;           }
+    inline void SetScale(float x, float y )  { SetScale(Vec2(x,         y)); }
+    inline void SetScale(float value      )  { SetScale(Vec2(value, value)); }
 
 
     //------------------------------------------------------------------------//
@@ -116,11 +116,11 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline Vec2 Size() const { return m_size; }
+    inline Vec2 GetSize() const { return m_size; }
 
     // Setters.
-    inline void Size(const Vec2 &size) { m_size = size;    }
-    inline void Size(float x, float y) { Size(Vec2(x, y)); }
+    inline void SetSize(const Vec2 &size) { m_size = size;    }
+    inline void SetSize(float x, float y) { SetSize(Vec2(x, y)); }
 
 
     //------------------------------------------------------------------------//
@@ -131,18 +131,18 @@ public:
     //------------------------------------------------------------------------//
 public:
     // Getters.
-    inline Vec2 Origin() const { return m_origin; }
+    inline Vec2 GetOrigin() const { return m_origin; }
 
     // Setters
-    inline void Origin(const Vec2 &origin) { m_origin = origin; }
-    inline void Origin(float x, float y)   { Origin(Vec2(x, y)); }
+    inline void SetOrigin(const Vec2 &origin) { m_origin = origin; }
+    inline void SetOrigin(float x, float y)   { SetOrigin(Vec2(x, y)); }
 
 
     //------------------------------------------------------------------------//
     // Bounding Rect                                                          //
     //------------------------------------------------------------------------//
 public:
-    SDL_Rect BoundingRect() const;
+    SDL_Rect GetBoundingRect() const;
 
 
     //------------------------------------------------------------------------//

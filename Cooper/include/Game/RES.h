@@ -40,7 +40,7 @@ namespace RES {
     void Init(const std::string &path = "./");
     void Shutdown();
 
-    bool Initialized();
+    bool IsInitialized();
 
 
     //------------------------------------------------------------------------//
@@ -49,7 +49,7 @@ namespace RES {
     void SetBasePath(const std::string &path);
     const std::string& GetBasePath();
 
-    std::string Fullpath(const std::string &path);
+    std::string GetFullpath(const std::string &path);
 
 
     //------------------------------------------------------------------------//

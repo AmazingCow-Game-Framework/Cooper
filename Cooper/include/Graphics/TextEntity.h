@@ -61,9 +61,9 @@ public:
     void SetFont(const std::string &path, int size);
 
     // Contents.
-    void Contents(const std::string &contents);
+    inline const std::string& GetContents() const { return m_contents; }
 
-    inline const std::string& Contents() const { return m_contents; }
+    void SetContents(const std::string &contents);
 
     // Helpers.
 private:
@@ -74,8 +74,7 @@ private:
     // Render Rect Functions                                                  //
     //------------------------------------------------------------------------//
 public:
-    // Setters.
-    inline void RenderRect(const SDL_Rect &rect)
+    inline void SetRenderRect(const SDL_Rect &rect)
     {
         m_renderRect          = rect;
         m_overridenRenderRect = true; // Now user decides what render.
@@ -88,7 +87,7 @@ public:
     }
 
     // Getters.
-    inline const SDL_Rect& RenderRect() const { return m_renderRect; }
+    inline const SDL_Rect& GetRenderRect() const { return m_renderRect; }
 
     inline bool IsRenderRectOverriden() const { return m_overridenRenderRect; }
 
@@ -101,11 +100,9 @@ private:
     // Opacity Functions                                                      //
     //------------------------------------------------------------------------//
 public:
-    // Getters.
-    inline float Opacity() const { return m_opacity; }
+    inline float GetOpacity() const { return m_opacity; }
 
-    // Setters.
-    inline void Opacity(float opacity) { m_opacity = opacity; }
+    inline void SetOpacity(float opacity) { m_opacity = opacity; }
 
 
     //------------------------------------------------------------------------//

@@ -61,7 +61,7 @@ Entity::~Entity()
 // Parent                                                                     //
 //----------------------------------------------------------------------------//
 // Setters.
-void Entity::Parent(Entity *pParent)
+void Entity::SetParent(Entity *pParent)
 {
     //--------------------------------------------------------------------------
     // We're losing our parent - So let's make our transform to world.
@@ -73,12 +73,12 @@ void Entity::Parent(Entity *pParent)
 
     //--------------------------------------------------------------------------
     // Attaching to new parent - So let's update our transform.
-    auto parent_position = pParent->Position(Space::World);
-    auto parent_scale    = pParent->Scale   (Space::World);
-    auto parent_rotation = pParent->Rotation(Space::World);
+    auto parent_position = pParent->GetPosition(Space::World);
+    auto parent_scale    = pParent->GetScale   (Space::World);
+    auto parent_rotation = pParent->GetRotation(Space::World);
 
     // Position
-    m_position = (Position(Space::World) - parent_position)
+    m_position = (GetPosition(Space::World) - parent_position)
                      .Rotated(-parent_rotation) / parent_scale;
 
     // Rotation
@@ -98,9 +98,9 @@ void Entity::RemoveParent()
 {
     // Since we're getting detached from Parent we need convert our transform
     // to the world. This way we gonna stay at "same" place.
-    m_position = Position(Space::World);
-    m_scale    = Scale   (Space::World);
-    m_rotation = Rotation(Space::World);
+    m_position = GetPosition(Space::World);
+    m_scale    = GetScale   (Space::World);
+    m_rotation = GetRotation(Space::World);
 
     m_pParent = nullptr;
 }
@@ -110,7 +110,7 @@ void Entity::RemoveParent()
 // Position                                                                   //
 //----------------------------------------------------------------------------//
 // Getters
-Vec2 Entity::Position(Space space /* = Space::World */) const
+Vec2 Entity::GetPosition(Space space /* = Space::World */) const
 {
     // When Entity doesn't have a parent it's position is treated as world.
     if(!m_pParent || space == Space::Local)
@@ -118,10 +118,10 @@ Vec2 Entity::Position(Space space /* = Space::World */) const
 
     // Entity have a parent.
     //   So we need offset by its transform.
-    auto rotated_position = (m_position * m_pParent->Scale(Space::World));
-    rotated_position.Rotate(m_pParent->Rotation(Space::World));
+    auto rotated_position = (m_position * m_pParent->GetScale(Space::World));
+    rotated_position.Rotate(m_pParent->GetRotation(Space::World));
 
-    return rotated_position + m_pParent->Position(Space::World);
+    return rotated_position + m_pParent->GetPosition(Space::World);
 }
 
 
@@ -129,13 +129,13 @@ Vec2 Entity::Position(Space space /* = Space::World */) const
 // Rotation                                                                   //
 //----------------------------------------------------------------------------//
 // Getters.
-float Entity::Rotation(Space space /* = Space::World */) const
+float Entity::GetRotation(Space space /* = Space::World */) const
 {
     //When Entity doesn't have a parent it's rotation is treated as world.
     if(!m_pParent || space == Space::Local)
         return m_rotation;
 
-    return m_rotation + m_pParent->Rotation(Space::World);
+    return m_rotation + m_pParent->GetRotation(Space::World);
 }
 
 
@@ -143,25 +143,25 @@ float Entity::Rotation(Space space /* = Space::World */) const
 // Scale                                                                      //
 //----------------------------------------------------------------------------//
 // Getters.
-Vec2 Entity::Scale(Space space /* = Space::World */) const
+Vec2 Entity::GetScale(Space space /* = Space::World */) const
 {
     //When Entity doesn't have a parent it's scale is treated as world.
     if(!m_pParent || space == Space::Local)
         return m_scale;
 
-    return m_scale * m_pParent->Scale(Space::World);
+    return m_scale * m_pParent->GetScale(Space::World);
 }
 
 
 //----------------------------------------------------------------------------//
 // Bounding Rect                                                              //
 //----------------------------------------------------------------------------//
-SDL_Rect Entity::BoundingRect() const
+SDL_Rect Entity::GetBoundingRect() const
 {
-    const auto &pos    = Position();
-    const auto &size   = Size    ();
-    const auto &origin = Origin  ();
-    const auto &scale  = Scale   ();
+    const auto &pos    = GetPosition();
+    const auto &size   = GetSize    ();
+    const auto &origin = GetOrigin  ();
+    const auto &scale  = GetScale   ();
 
     return Math::MakeRect(
         (pos.x - size.x * scale.x * origin.x),

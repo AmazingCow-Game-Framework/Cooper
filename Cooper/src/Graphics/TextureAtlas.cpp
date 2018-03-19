@@ -48,15 +48,15 @@ TextureAtlas::TextureAtlas(const std::string &path) :
 //----------------------------------------------------------------------------//
 //  Getters                                                                   //
 //----------------------------------------------------------------------------//
-TextureEntity::UPtr TextureAtlas::Texture(const std::string &key)
+TextureEntity::UPtr TextureAtlas::GetTexture(const std::string &key)
 {
     return Cooper::make_unique<TextureEntity>(
         m_texturesPath,
-        Rectangle(key)
+        GetRectangle(key)
     );
 }
 
-const SDL_Rect& TextureAtlas::Rectangle(const std::string &key)
+const SDL_Rect& TextureAtlas::GetRectangle(const std::string &key)
 {
     auto it = m_rectsMap.find(key);
 
@@ -115,7 +115,7 @@ void TextureAtlas::LoadFromFile()
         m_atlasPath.c_str()
     );
 
-    m_texturesPath = RES::Fullpath(lines[0]);
+    m_texturesPath = RES::GetFullpath(lines[0]);
     for(auto it = ++std::begin(lines); it != std::end(lines); ++it)
     {
         std::stringstream ss(*it);

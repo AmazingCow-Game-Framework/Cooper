@@ -59,13 +59,13 @@ public:
     //
     // If we want just to get the Render Rectangles to make an animation
     // of the texture we can call the Rectangle() function instead.
-    TextureEntity::UPtr Texture(const std::string &key);
+    TextureEntity::UPtr GetTexture(const std::string &key);
 
 
     //--------------------------------------------------------------------------
     // Gets the rectangle described by the key.
     // This is useful to make an texture animation.
-    const SDL_Rect& Rectangle(const std::string &key);
+    const SDL_Rect& GetRectangle(const std::string &key);
 
 
     //------------------------------------------------------------------------//

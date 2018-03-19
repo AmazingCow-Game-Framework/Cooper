@@ -49,7 +49,7 @@ public:
     static void Init(int targetFPS);
     static void Shutdown();
 
-    static bool Initialized();
+    static bool IsInitialized();
 
     static void Run();
 
