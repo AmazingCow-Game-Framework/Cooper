@@ -24,6 +24,8 @@
 #include <cstring> // memset(3), memcpy(3), memcmp(3)
 // AmazingCow Libs
 #include "CoreAssert/CoreAssert.h"
+// Cooper
+#include "include/private/Logger/Logger.h"
 
 // Usings
 using namespace Cooper;
@@ -49,6 +51,27 @@ namespace {
     Uint32           m_prevMouseState    = 0;
     Uint32           m_currMouseState    = 0;
 };
+
+//----------------------------------------------------------------------------//
+// Helper Functions                                                           //
+//----------------------------------------------------------------------------//
+acow_internal_function
+void check_input_valid(u32 key)
+{
+    //--------------------------------------------------------------------------
+    // Sanity Checks.
+    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
+
+    COREASSERT_ASSERT(
+        key != Cooper::Input::Mouse_Input_Shift,
+        "Mouse_Input_Shift is just for internal use."
+    );
+
+    COREASSERT_ASSERT(
+        key != Cooper::Input::Keyboard_Input_Shift,
+        "Keyboard_Input_Shift is just for internal use."
+    );
+}
 
 
 //----------------------------------------------------------------------------//
@@ -94,8 +117,7 @@ void Input::Shutdown()
 
     //--------------------------------------------------------------------------
     // Delete memory allocated by us.
-    delete m_pPrevKeyboardState;
-    m_pPrevKeyboardState = nullptr;
+    ACOW_SAFE_DELETE_ARR(m_pPrevKeyboardState);
 
     //--------------------------------------------------------------------------
     // Complete deinitialization.
@@ -137,6 +159,11 @@ void Input::Update()
         m_currMousePosition.x != m_prevMousePosition.x  ||
         m_currMousePosition.y != m_prevMousePosition.y
     );
+
+    // COWTODO(n2omatt):
+//    Private::Logger()->D(
+//        "Mouse pos: (%d, %d)", i32(m_currMousePosition.x), i32(m_currMousePosition.y)
+//    );
 }
 
 void Input::PostUpdate()
@@ -164,25 +191,144 @@ bool Input::HasKeyboardInput()
     return m_hasKeyboardInput;
 }
 
-bool Input::IsKeyDown(u32 key)
+bool Input::IsKeyDown(u32 rawKey)
 {
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
+    check_input_valid(rawKey);
 
-    return m_pCurrKeyboardState[key];
+    // Handling Mouse.
+    if(rawKey < Keyboard_Input_Shift)
+    {
+        auto button = (rawKey - Mouse_Input_Shift);
+        auto value  = m_currMouseState && SDL_BUTTON(button);
+
+        // if(value == true)
+        // {
+        //     Private::Logger()->D(
+        //         "IsKeyDown - Key: (%d) - Mouse: (%d) - State: (%d)",
+        //         rawKey,
+        //         button,
+        //         value
+        //     );
+        // }
+
+        return value;
+    }
+
+    // Handling Keyboard
+    if(rawKey > Keyboard_Input_Shift)
+    {
+        auto key   = (rawKey - Keyboard_Input_Shift);
+        auto value = m_pCurrKeyboardState[key];
+
+        // if(value)
+        // {
+        //     Private::Logger()->D(
+        //         "IsKeyDown - Key: (%d) - Keyboard: (%d) - State: (%d)",
+        //         rawKey,
+        //         key,
+        //         value
+        //     );
+        // }
+
+        return value;
+    }
+
+    return false;
 }
 
-bool Input::IsKeyPress(u32 key)
+bool Input::IsKeyPress(u32 rawKey)
 {
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
+    check_input_valid(rawKey);
 
-    return !m_pPrevKeyboardState[key] && m_pCurrKeyboardState[key];
+    // Handling Mouse.
+    if(rawKey < Keyboard_Input_Shift)
+    {
+        auto button = (rawKey - Mouse_Input_Shift);
+        auto value  = !(m_prevMouseState & SDL_BUTTON(button)) &&
+                       (m_currMouseState & SDL_BUTTON(button));
+
+        if(value == true)
+        {
+            Private::Logger()->D(
+                "IsKeyPress - Key: (%d) - Mouse: (%d) - State: (%d)",
+                rawKey,
+                button,
+                value
+            );
+        }
+
+        return value;
+    }
+
+    // Handling Keyboard
+    if(rawKey > Keyboard_Input_Shift)
+    {
+        auto key   = (rawKey - Keyboard_Input_Shift);
+        auto value = !m_pPrevKeyboardState[key] &&
+                      m_pCurrKeyboardState[key];
+
+        if(value == true)
+        {
+            Private::Logger()->D(
+                "IsKeyPress - Key: (%d) - Keyboard: (%d) - State: (%d)",
+                rawKey,
+                key,
+                value
+            );
+        }
+
+        return value;
+    }
+
+    return false;
 }
 
-bool Input::IsKeyRelease(u32 key)
+bool Input::IsKeyRelease(u32 rawKey)
 {
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
 
-    return m_pPrevKeyboardState[key] && !m_pCurrKeyboardState[key];
+     check_input_valid(rawKey);
+
+    // Handling Mouse.
+    if(rawKey < Keyboard_Input_Shift)
+    {
+        auto button = (rawKey - Mouse_Input_Shift);
+        auto value  =  (m_prevMouseState & SDL_BUTTON(button)) &&
+                      !(m_currMouseState & SDL_BUTTON(button));
+
+        if(value == true)
+        {
+            Private::Logger()->D(
+                "IsKeyRelease - Key: (%d) - Mouse: (%d) - State: (%d)",
+                rawKey,
+                button,
+                value
+            );
+        }
+
+        return value;
+    }
+
+    // Handling Keyboard
+    if(rawKey > Keyboard_Input_Shift)
+    {
+        auto key   = (rawKey - Keyboard_Input_Shift);
+        auto value =  m_pPrevKeyboardState[key] &&
+                     !m_pCurrKeyboardState[key];
+
+        if(value == true)
+        {
+            Private::Logger()->D(
+                "IsKeyRelease - Key: (%d) - Keyboard: (%d) - State: (%d)",
+                rawKey,
+                key,
+                value
+            );
+        }
+
+        return value;
+    }
+
+    return false;
 }
 
 
@@ -192,7 +338,6 @@ bool Input::IsKeyRelease(u32 key)
 bool Input::HasMouseInput()
 {
     COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
-
     return m_hasMouseInput;
 }
 
@@ -205,36 +350,6 @@ const acow::math::Vec2& Input::GetMousePosition()
     s_mouse_pos.x = m_currMousePosition.x;
     s_mouse_pos.y = m_currMousePosition.y;
 
+
     return s_mouse_pos;
-}
-
-bool Input::IsMouseButtonDown(u8 button)
-{
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
-
-    return m_currMouseState && SDL_BUTTON(button);
-}
-
-bool Input::IsMouseButtonPress(u8 button)
-{
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
-
-    //--------------------------------------------------------------------------
-    // We set 0 as the left button, but SDL wants that be 1.
-    ++button;
-
-    return !(m_prevMouseState & SDL_BUTTON(button))
-        &&  (m_currMouseState & SDL_BUTTON(button));
-}
-
-bool Input::IsMouseButtonRelease(u8 button)
-{
-    COREASSERT_ASSERT(m_initialized, "Input isn't initialized.");
-
-    //--------------------------------------------------------------------------
-    // We set 0 as the left button, but SDL wants that be 1.
-    ++button;
-
-    return  (m_prevMouseState & SDL_BUTTON(button))
-        && !(m_currMouseState & SDL_BUTTON(button));
 }

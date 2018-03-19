@@ -22,14 +22,22 @@
 
 // std
 #include <string>
-// Cooper
+// AmazingCow Libs
 #include "acow/math_goodies.h"
+// Cooper
+#include "Keycodes.h"
+
 
 namespace Cooper {
 
 // "class-like" namespace.
 namespace Input
 {
+    //------------------------------------------------------------------------//
+    // Enums / Constants / Typedefs                                           //
+    //------------------------------------------------------------------------//
+    enum { MouseLeft = 0, MouseMiddle = 1, MouseRight =2 };
+
     //------------------------------------------------------------------------//
     // Lifecycle Functions                                                    //
     //------------------------------------------------------------------------//
@@ -72,19 +80,6 @@ namespace Input
     //--------------------------------------------------------------------------
     // The position of mouse - Relative to the screen.
     const acow::math::Vec2& GetMousePosition();
-
-    //COWTODO(n2omatt): Should we use a enumeration to better reading?
-    //--------------------------------------------------------------------------
-    // True every time that button is down.
-    bool IsMouseButtonDown(u8 button);
-
-    //--------------------------------------------------------------------------
-    // True only on the frame that button is down.
-    bool IsMouseButtonPress(u8 button);
-
-    //--------------------------------------------------------------------------
-    // True only on the frame that button is up.
-    bool IsMouseButtonRelease(u8 button);
 
 } // namespace Input
 } // namespace Cooper
